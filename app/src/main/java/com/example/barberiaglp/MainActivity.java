@@ -1,61 +1,53 @@
 package com.example.barberiaglp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView btnLoginTab, btnRegisterTab;
-    boolean isLoginSelected = true;
+    private TextView btnLogin, btnRegister;
+    private boolean showingLogin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        btnLoginTab = findViewById(R.id.btnLoginTab);
-        btnRegisterTab = findViewById(R.id.btnRegisterTab);
+        btnLogin = findViewById(R.id.btnLoginTab);
+        btnRegister = findViewById(R.id.btnRegisterTab);
 
-        // Estado inicial: Login seleccionado
-        actualizarEstilo();
+        // Cargar el fragmento inicial (Login)
+        replaceFragment(new FragmentoLogin());
 
-        btnLoginTab.setOnClickListener(v -> {
-            if (!isLoginSelected) {
-                isLoginSelected = true;
-                actualizarEstilo();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-        });
-
-        btnRegisterTab.setOnClickListener(v -> {
-            if (isLoginSelected) {
-                isLoginSelected = false;
-                actualizarEstilo();
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-            }
-        });
+        btnLogin.setOnClickListener(v -> showLogin());
+        btnRegister.setOnClickListener(v -> showRegister());
     }
 
-    private void actualizarEstilo() {
-        if (isLoginSelected) {
-            btnLoginTab.setBackgroundResource(R.drawable.tab_left_selected);
-            btnRegisterTab.setBackgroundResource(R.drawable.tab_right_unselected);
-        } else {
-            btnLoginTab.setBackgroundResource(R.drawable.tab_left_unselected);
-            btnRegisterTab.setBackgroundResource(R.drawable.tab_right_selected);
+    private void showLogin() {
+        if (!showingLogin) {
+            replaceFragment(new FragmentoLogin());
+            btnLogin.setBackgroundResource(R.drawable.tab_left_selected);
+            btnRegister.setBackgroundResource(R.drawable.tab_right_unselected);
+            showingLogin = true;
         }
     }
+
+    private void showRegister() {
+        if (showingLogin) {
+            replaceFragment(new FragmentoRegistrar());
+            btnRegister.setBackgroundResource(R.drawable.tab_right_selected);
+            btnLogin.setBackgroundResource(R.drawable.tab_left_unselected);
+            showingLogin = false;
+        }
     }
+
+
+    private void replaceFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, fragment);
+        transaction.commit();
+    }
+}
