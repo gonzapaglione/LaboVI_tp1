@@ -1,5 +1,6 @@
 package com.example.barberiaglp;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -59,7 +60,10 @@ public class FragmentoLogin extends Fragment {
         // Compara con lo que ingresó el usuario
         if (emailIngresado.equals(emailGuardado) && passwordIngresada.equals(passwordGuardada)) {
             Toast.makeText(getContext(), "¡Bienvenido, " + nombreGuardado + " 👋!", Toast.LENGTH_LONG).show();
-
+            //derivar a MainActivity
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            getActivity().finish();
 
         } else {
             Toast.makeText(getContext(), "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();

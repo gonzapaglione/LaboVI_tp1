@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/captura_de_pantalla_2025_10_09_113539" />
+        app:srcCompat="@drawable/fotoportada" />
 
     <TextView
         android:id="@+id/titulo"

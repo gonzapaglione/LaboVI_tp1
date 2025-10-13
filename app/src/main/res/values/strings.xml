@@ -15,4 +15,8 @@
     <string name="apellido">Apellido</string>
     <string name="repetir_contrase_a">Repetir contraseña</string>
     <string name="registrarme">Registrarme</string>
+    <string name="perfil">Perfil</string>
+    <string name="mis_turnos">Mis Turnos</string>
+    <string name="inicio">Inicio</string>
+    <string name="servicios">Servicios</string>
 </resources>
