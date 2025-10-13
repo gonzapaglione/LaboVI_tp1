@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private TextView btnLogin, btnRegister;
     private boolean showingLogin = true;
@@ -14,12 +14,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.login_activity);
 
         btnLogin = findViewById(R.id.btnLoginTab);
         btnRegister = findViewById(R.id.btnRegistrar);
 
-        // Cargar el fragmento inicial (Login)
+        // Cargar el fragmento inicial (De login)
         replaceFragment(new FragmentoLogin());
 
         btnLogin.setOnClickListener(v -> showLogin());
