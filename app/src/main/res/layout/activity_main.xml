@@ -67,7 +67,7 @@
             tools:layout_editor_absoluteY="348dp" />
 
         <TextView
-            android:id="@+id/btnRegisterTab"
+            android:id="@+id/btnRegistrar"
             android:layout_width="157dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

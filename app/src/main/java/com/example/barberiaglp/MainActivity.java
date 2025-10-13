@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnLogin = findViewById(R.id.btnLoginTab);
-        btnRegister = findViewById(R.id.btnRegisterTab);
+        btnRegister = findViewById(R.id.btnRegistrar);
 
         // Cargar el fragmento inicial (Login)
         replaceFragment(new FragmentoLogin());
@@ -43,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
             showingLogin = false;
         }
     }
-
-
+    
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment);
