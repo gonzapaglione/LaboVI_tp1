@@ -27,7 +27,7 @@ public class InicioFragment extends Fragment {
         SharedPreferences preferences = requireActivity()
                 .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String nombreGuardado = preferences.getString("nombre", "Usuario");
-        bienvenido.setText("Bienvenida, "+ nombreGuardado + "!");
+        bienvenido.setText("Bienvenido, "+ nombreGuardado+ "!");
 
 
         // Hacer que cuando se toque la campanita se muestren las notificaciones

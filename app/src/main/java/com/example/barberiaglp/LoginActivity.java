@@ -14,14 +14,17 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity);
+        setContentView(R.layout.login_activity); // Asegúrate de que el nombre sea correcto
 
+        // Asegurate que estos IDs coincidan EXACTAMENTE con los del XML
         btnLogin = findViewById(R.id.btnLoginTab);
         btnRegister = findViewById(R.id.btnRegistrar);
 
-        // Cargar el fragmento inicial (De login)
+        // Cargar el fragmento inicial (Login)
         replaceFragment(new FragmentoLogin());
+        highlightLoginTab(); // para marcar visualmente el tab activo
 
+        // Eventos de click
         btnLogin.setOnClickListener(v -> showLogin());
         btnRegister.setOnClickListener(v -> showRegister());
     }
@@ -29,8 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private void showLogin() {
         if (!showingLogin) {
             replaceFragment(new FragmentoLogin());
-            btnLogin.setBackgroundResource(R.drawable.tab_left_selected);
-            btnRegister.setBackgroundResource(R.drawable.tab_right_unselected);
+            highlightLoginTab();
             showingLogin = true;
         }
     }
@@ -38,12 +40,21 @@ public class LoginActivity extends AppCompatActivity {
     private void showRegister() {
         if (showingLogin) {
             replaceFragment(new FragmentoRegistrar());
-            btnRegister.setBackgroundResource(R.drawable.tab_right_selected);
-            btnLogin.setBackgroundResource(R.drawable.tab_left_unselected);
+            highlightRegisterTab();
             showingLogin = false;
         }
     }
-    
+
+    private void highlightLoginTab() {
+        btnLogin.setBackgroundResource(R.drawable.tab_left_selected);
+        btnRegister.setBackgroundResource(R.drawable.tab_right_unselected);
+    }
+
+    private void highlightRegisterTab() {
+        btnLogin.setBackgroundResource(R.drawable.tab_left_unselected);
+        btnRegister.setBackgroundResource(R.drawable.tab_right_selected);
+    }
+
     private void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, fragment);
