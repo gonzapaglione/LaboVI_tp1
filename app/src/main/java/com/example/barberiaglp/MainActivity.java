@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
         // Lee el valor booleano de "isLoggedIn". Si no existe, devuelve 'false' por defecto.
         boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
 
-        if (!isLoggedIn) {
-            // Si el usuario NO ha iniciado sesión:
+        if (!isLoggedIn) { // Si el usuario NO ha iniciado sesión:
             // 1. Inicia la actividad de Login.
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             // 2. Añade flags para limpiar el historial de actividades.

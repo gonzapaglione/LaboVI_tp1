@@ -20,7 +20,6 @@ public class InicioFragment extends Fragment {
     public InicioFragment(){}
 
     TextView bienvenido;
-    ImageView notificaciones;
     AppDatabase db = AppDatabase.getInstance(getContext());
     UsuarioDao userDao = db.usuarioDao();
 

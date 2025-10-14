@@ -1,4 +1,6 @@
 package com.example.barberiaglp;
+
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,18 +11,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import BD.AppDatabase;
-import Modelos.Usuario;
+import Repositorios.UsuarioRepositorio;
 
 public class FragmentoLogin extends Fragment {
     public FragmentoLogin(){}
 
     public EditText etEmail, etPassword;
     public Button btnLoginn;
+    private UsuarioRepositorio usuarioRepo;
 
     @Nullable
     @Override
@@ -32,6 +32,9 @@ public class FragmentoLogin extends Fragment {
         etPassword = view.findViewById(R.id.inputPassword);
 
         btnLoginn = view.findViewById(R.id.btnLogin);
+
+        Application application = requireActivity().getApplication();
+        usuarioRepo = new UsuarioRepositorio(application);
 
         btnLoginn.setOnClickListener(v -> verificarLogin());
         return view;
@@ -47,22 +50,36 @@ public class FragmentoLogin extends Fragment {
           return;
       }
 
-        AppDatabase db = AppDatabase.getInstance(getContext());
-        Usuario usuario = db.usuarioDao().login(emailIngresado, passwordIngresada);
+        usuarioRepo.login(emailIngresado, passwordIngresada, usuario -> {
+            // ESTE CÓDIGO SE EJECUTA CUANDO EL REPOSITORIO DEVUELVE UNA RESPUESTA
+            // Es crucial asegurarse de que la actividad/fragmento todavía existe
+            // y ejecutar cambios de UI en el hilo principal.
+            if (getActivity() == null) {
+                return;
+            }
+            getActivity().runOnUiThread(() -> {
+                if (usuario != null) {
+                    // Login Exitoso
+                    Toast.makeText(getContext(), "Bienvenida " + usuario.nombre, Toast.LENGTH_SHORT).show();
 
-        if (usuario != null) {
-            Toast.makeText(getContext(), "Bienvenida " + usuario.nombre, Toast.LENGTH_SHORT).show();
-            SharedPreferences preferences = requireActivity()
-                    .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("email", emailIngresado);
-            editor.putString("password", passwordIngresada);
-            editor.putBoolean("isLoggedIn", true); // Guardamos que la sesión está iniciada
-            editor.apply();
-            startActivity(new Intent(getActivity(), MainActivity.class));
-        } else {
-            Toast.makeText(getContext(), "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-        }
+                    // Guardar la sesión
+                    SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("userEmail", usuario.email); // Guarda el email real de la BD
+                    editor.putBoolean("isLoggedIn", true);
+                    editor.apply();
+
+                    // Redirigir a MainActivity
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else {
+                    // Login Fallido
+                    Toast.makeText(getContext(), "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+    }
 
     }
-}
+

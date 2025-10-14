@@ -1,5 +1,6 @@
 package com.example.barberiaglp;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -10,15 +11,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import BD.AppDatabase;
-import Daos.UsuarioDao;
 import Modelos.Usuario;
+import Repositorios.UsuarioRepositorio;
 
 public class FragmentoRegistrar extends Fragment {
 
     private EditText etNombre, etEmail, etPassword, etApellido, etPassword2;
     private Button btnRegistrar;
+
+    private UsuarioRepositorio usuarioRepo;
 
     public FragmentoRegistrar(){}
 
@@ -33,6 +34,10 @@ public class FragmentoRegistrar extends Fragment {
         etEmail = view.findViewById(R.id.inputMail);
         etPassword = view.findViewById(R.id.inputPassword);
         etPassword2 = view.findViewById(R.id.inputPassword2);
+
+        //Inicializar el repositorio
+        Application application = requireActivity().getApplication();
+        usuarioRepo = new UsuarioRepositorio(application);
 
         btnRegistrar = view.findViewById(R.id.btnRegistrar);
         btnRegistrar.setOnClickListener(v -> guardarDatos());
@@ -64,17 +69,13 @@ public class FragmentoRegistrar extends Fragment {
             return;
         }
 
-        //guardar datos en la base de datos
-        AppDatabase db = AppDatabase.getInstance(getContext());
-        UsuarioDao userDao = db.usuarioDao();
-
         Usuario nuevo = new Usuario();
         nuevo.nombre = nombre;
         nuevo.apellido = apellido;
         nuevo.email = email;
         nuevo.password = password;
         nuevo.rol = "Cliente";
-        userDao.insert(nuevo);
+        usuarioRepo.insert(nuevo);
         Toast.makeText(getContext(), "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
 
         //limpiar inputs
