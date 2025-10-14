@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScrollingFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#230F10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="34dp"
+            android:layout_marginBottom="34dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="27dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Mi perfil" />
+
+            <!-- Espaciador -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Editar"
+                android:clickable="true"
+                android:focusable="true"
+                android:textColor="#760106"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <!--Datos personales-->
+        <LinearLayout
+            android:id="@+id/r1u5dkai3o40h"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
+            android:layout_marginHorizontal="23dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/r3w8xo74r9ti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="296dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Nombre" />
+
+                <EditText
+                    android:inputType="text"
+                    android:hint="John"
+                    android:textColorHint="#FFFFFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_background_dark"
+                    android:paddingVertical="19dp"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="36dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="294dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Apellido" />
+
+                <EditText
+                    android:inputType="text"
+                    android:hint="Doe"
+                    android:textColorHint="#FFFFFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_background_dark"
+                    android:paddingVertical="19dp"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="36dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="316dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Email" />
+
+                <EditText
+                    android:inputType="text"
+                    android:hint="johndoe@gmail.com"
+                    android:textColorHint="#FFFFFF"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_background_dark"
+                    android:paddingVertical="19dp"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="36dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="9dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Contraseña" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background_dark"
+                        android:paddingVertical="16dp"
+                        android:paddingStart="19dp"
+                        android:paddingEnd="48dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:inputType="textPassword"
+                    android:hint="************"
+                    android:textColorHint="@color/white"
+                        android:gravity="center_vertical" />
+
+                    <ImageButton
+                        android:id="@+id/btnTogglePassword"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="18dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_visibility_on"
+                        app:tint="#FFFFFF" />
+                </FrameLayout>
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="41dp"
+                android:layout_marginHorizontal="28dp"
+                android:orientation="vertical">
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginEnd="131dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Informacion de cliente"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_background"
+                    android:paddingVertical="18dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:textColor="#C7C7C7"
+                        android:textSize="16sp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Cliente desde: "
+                        />
+                    <TextView
+                        android:textColor="#EDEDED"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginEnd="25dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="15 de Febrero, 2025"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="36dp"
+                android:layout_marginHorizontal="26dp"
+                android:orientation="vertical">
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="21dp"
+                    android:layout_marginEnd="157dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Historial de servicios"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="21dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/countCortes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/rounded_background"
+                        android:paddingVertical="25dp"
+                        android:paddingHorizontal="39dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="31dp"
+                            android:layout_marginBottom="1dp"
+                            android:src="@drawable/ic_scissors"
+                            android:scaleType="fitXY"
+                            app:tint="#760106" />
+                        <TextView
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="3"
+                            />
+                        <TextView
+                            android:textColor="#838383"
+                            android:textSize="11sp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="Recorte barba"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center_horizontal"
+                        android:background="@drawable/rounded_background"
+                        android:paddingVertical="25dp"
+                        android:paddingHorizontal="39dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="31dp"
+                            android:layout_marginBottom="1dp"
+                            android:src="@drawable/ic_penknife"
+                            android:scaleType="fitXY" app:tint="#760106" />
+
+                        <TextView
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="4dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="3"
+                            />
+                        <TextView
+                            android:textColor="#838383"
+                            android:textSize="11sp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="Recorte barba"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/rounded_background"
+                    android:paddingVertical="16dp"
+                    android:paddingHorizontal="118dp"
+                    android:layout_marginHorizontal="1dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/ic_chair"
+                        android:scaleType="fitXY"
+                        app:tint="#760106" />
+                    <TextView
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="7"
+                        />
+                    <TextView
+                        android:textColor="#838383"
+                        android:textSize="11sp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="Combos corte y barba"
+                        />
+                </LinearLayout>
+                <Button
+                    android:id="@+id/btnLogOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/botones"
+                    android:text="@string/cerrarSesion"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+</androidx.core.widget.NestedScrollView>

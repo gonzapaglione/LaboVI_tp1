@@ -1,102 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#230F10"
-    android:textAlignment="center"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="390dp"
-        android:layout_height="278dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/captura_de_pantalla_2025_10_09_113539" />
+    <!-- Contenedor del contenido principal -->
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/titulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/bienvenido_de_vuelta"
-        android:textColor="#FFFFFF"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+    <!-- Línea divisoria superior -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#A03A3A" />
 
+    <!-- Barra inferior -->
     <LinearLayout
-        android:id="@+id/switchContainer"
-        android:layout_width="327dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/switch_background"
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titulo"
-        tools:ignore="MissingConstraints">
+        android:weightSum="4"
+        android:background="#1C0A0B"
+        android:paddingVertical="4dp"
+        android:elevation="8dp">
 
-
-        <TextView
-            android:id="@+id/btnLoginTab"
-            android:layout_width="157dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+        <!-- INICIO -->
+        <LinearLayout
+            android:id="@+id/navInicio"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/tab_left_selected"
-            android:clickable="true"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Iniciar Sesión"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:ignore="TouchTargetSizeCheck"
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="348dp" />
-
-        <TextView
-            android:id="@+id/btnRegistrar"
-            android:layout_width="157dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:background="@drawable/tab_right_unselected"
-            android:clickable="true"
+            android:orientation="vertical"
             android:gravity="center"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Crear Cuenta"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/btnLoginTab"
-            tools:layout_editor_absoluteY="348dp" />
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/iconInicio"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_home"
+                android:tint="#BDBDBD" />
+
+            <TextView
+                android:id="@+id/NavInicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/inicio"
+                android:textSize="12sp"
+                android:textColor="#C7C4C4" />
+        </LinearLayout>
+
+        <!-- MIS TURNOS -->
+        <LinearLayout
+            android:id="@+id/navTurnos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/iconTurnos"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_calendar"
+                android:tint="#BDBDBD" />
+
+            <TextView
+                android:id="@+id/NavMisTurnos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/mis_turnos"
+                android:textSize="12sp"
+                android:textColor="#C7C4C4" />
+        </LinearLayout>
+
+        <!-- SERVICIOS -->
+        <LinearLayout
+            android:id="@+id/navServicios"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/iconServicios"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_scissors"
+                android:tint="#BDBDBD" />
+
+            <TextView
+                android:id="@+id/NavServicios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/servicios"
+                android:textSize="12sp"
+                android:textColor="#C7C4C4" />
+        </LinearLayout>
+
+        <!-- PERFIL -->
+        <LinearLayout
+            android:id="@+id/navPerfil"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+
+            <ImageView
+                android:id="@+id/iconPerfil"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_account"
+                android:tint="#BDBDBD" />
+
+            <TextView
+                android:id="@+id/NavPerfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/perfil"
+                android:textSize="12sp"
+                android:textColor="#C7C4C4" />
+        </LinearLayout>
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_width="403dp"
-        android:layout_height="353dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switchContainer"
-        tools:layout_editor_absoluteX="4dp"
-        tools:ignore="MissingConstraints" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
