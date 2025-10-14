@@ -3,16 +3,12 @@ package Modelos;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "usuarios")
-public class Usuario {
-
+@Entity(tableName = "servicios")
+public class Servicio {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
     public String nombre;
-    public String apellido;
-    public String email;
-    public String password;
-    public String rol;
-
+    public int duracionMin; // duración en minutos
+    public double precio;
 }

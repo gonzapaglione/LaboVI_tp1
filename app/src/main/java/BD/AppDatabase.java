@@ -5,22 +5,33 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
 
+import Daos.HorarioDao;
+import Daos.ServicioDao;
+import Daos.TurnoDao;
 import Daos.UsuarioDao;
+import Modelos.Horario;
+import Modelos.Servicio;
+import Modelos.Turno;
 import Modelos.Usuario;
 
-@Database(entities = {Usuario.class}, version = 1)
+@Database(entities = {Usuario.class, Servicio.class, Turno.class, Horario.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
+
+    private static AppDatabase instancia;
+
     public abstract UsuarioDao usuarioDao();
+    public abstract ServicioDao servicioDao();
+    public abstract TurnoDao turnoDao();
+    public abstract HorarioDao horarioDao();
 
-    private static AppDatabase INSTANCE;
-
-    public static AppDatabase getInstance(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "mi_base_datos")
-                    .allowMainThreadQueries() // ⚠️ Solo para pruebas, no en producción
+    public static synchronized AppDatabase getInstance(Context context) {
+        if (instancia == null) {
+            instancia = Room.databaseBuilder(context.getApplicationContext(),
+                            AppDatabase.class, "barberia_db")
+                    .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries() // ⚠️ solo para pruebas
                     .build();
         }
-        return INSTANCE;
+        return instancia;
     }
 }

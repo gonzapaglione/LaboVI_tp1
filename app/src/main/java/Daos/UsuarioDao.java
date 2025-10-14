@@ -19,4 +19,7 @@ public interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios WHERE email = :email LIMIT 1")
     Usuario findByEmail(String email);
+
+    @Query("SELECT * FROM usuarios WHERE rol = :rol")
+    List<Usuario> obtenerPorRol(String rol);
 }
