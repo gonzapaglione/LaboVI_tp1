@@ -29,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
             instancia = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "barberia_db")
                     .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries() // ⚠️ solo para pruebas
+                    .allowMainThreadQueries() // solo para pruebas
                     .build();
         }
         return instancia;
