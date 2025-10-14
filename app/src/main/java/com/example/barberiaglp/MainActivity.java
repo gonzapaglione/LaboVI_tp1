@@ -1,5 +1,8 @@
 package com.example.barberiaglp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        verificarSesion();
 
         //Botones
         navInicio = findViewById(R.id.navInicio);
@@ -66,6 +71,26 @@ public class MainActivity extends AppCompatActivity {
             highlightSelected(iconPerfil, textoPerfil);
         });
     }
+    private void verificarSesion() {
+        // Obtiene el archivo de preferencias "UserPrefs"
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+
+        // Lee el valor booleano de "isLoggedIn". Si no existe, devuelve 'false' por defecto.
+        boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
+
+        if (!isLoggedIn) {
+            // Si el usuario NO ha iniciado sesión:
+            // 1. Inicia la actividad de Login.
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            // 2. Añade flags para limpiar el historial de actividades.
+            //    Así, el usuario no puede volver a la MainActivity con el botón de "atrás".
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            // 3. Finaliza la MainActivity actual para que no se quede en segundo plano.
+            finish();
+        }
+    }
+
 
     private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()

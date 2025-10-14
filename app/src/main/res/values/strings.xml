@@ -19,4 +19,6 @@
     <string name="mis_turnos">Mis Turnos</string>
     <string name="inicio">Inicio</string>
     <string name="servicios">Servicios</string>
+    <string name="Salir">Salir</string>
+    <string name="crear_cuenta">Crear Cuenta</string>
 </resources>

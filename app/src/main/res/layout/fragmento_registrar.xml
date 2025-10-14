@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="385dp"
-        android:layout_height="533dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="start"
         android:orientation="vertical"
         android:padding="24dp"
@@ -25,7 +25,7 @@
             android:text="@string/nombre"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
         <EditText
             android:id="@+id/inputNombre"
@@ -84,7 +84,7 @@
             android:text="@string/contrase_a"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textSize="12sp"  />
 
         <EditText
             android:id="@+id/inputPassword"
@@ -117,12 +117,12 @@
 
         <Button
             android:id="@+id/btnRegistrar"
-            android:layout_width="335dp"
+            android:layout_width="364dp"
             android:layout_height="47dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/botones"
             android:text="@string/registrarme"
-            tools:layout_editor_absoluteX="4dp" />
+            tools:layout_editor_absoluteX="26dp"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="150dp"/>

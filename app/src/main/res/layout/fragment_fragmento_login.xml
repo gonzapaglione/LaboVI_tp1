@@ -3,21 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     tools:context=".FragmentoLogin"
     android:background="#230F10">
 
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="385dp"
-        android:layout_height="533dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="start"
         android:orientation="vertical"
         android:padding="24dp"
         tools:layout_editor_absoluteX="-11dp">
 
 
-    <TextView
+        <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,14 +59,13 @@
 
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="337dp"
+            android:layout_width="364dp"
             android:layout_height="47dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/botones"
             android:text="@string/iniciar_sesi_n"
             tools:layout_editor_absoluteX="26dp" />
     </LinearLayout>
-
 
 
 </FrameLayout>

@@ -26,14 +26,33 @@
                 android:text="Bienvenido, "
                 android:textColor="#FFFFFF" />
 
-            <ImageView
-                android:id="@+id/iconNotificacion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
                 android:clickable="true"
-                android:src="@drawable/ic_notifications"
-                app:tint="#FFFFFF" />
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/iconLogOut"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:onClick="cerrarsesion"
+                    android:src="@drawable/ic_logout"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/NavInicio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Salir"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
