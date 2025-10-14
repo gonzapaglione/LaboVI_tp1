@@ -5,55 +5,195 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#230F10"
+
     tools:context=".InicioFragment">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:background="#230F10">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textBienvenida"
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="329dp"
-                android:layout_height="60dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="15dp"
-                android:text="Bienvenido, "
-                android:textColor="#FFFFFF" />
-
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground">
-
-                <ImageView
-                    android:id="@+id/iconLogOut"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:onClick="cerrarsesion"
-                    android:src="@drawable/ic_logout"
-                    app:tint="#FFFFFF" />
-
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="33dp"
+                android:layout_marginBottom="39dp"
+                android:layout_marginHorizontal="26dp"
+                android:orientation="horizontal">
                 <TextView
-                    android:id="@+id/NavInicio"
+                    android:id="@+id/textBienvenida"
+                    android:textColor="#FFFFFF"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Bienvenido, " />
+                <ImageButton
+                    android:id="@+id/notification_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/Salir"
-                    android:textColor="#FFFFFF"
-                    android:textSize="10sp" />
+                    android:src="@drawable/ic_notifications"
+                    app:tint="#FFFFFF"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Notificaciones" />
             </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="21dp"
+                android:layout_marginHorizontal="27dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/fotoinicio"
+                    android:alpha="0.3" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="30dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:textColor="#FFFFFF"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text="Reservá tu próxima cita" />
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reservar ahora"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="#760106"
+                        app:cornerRadius="9dp"
+                        android:layout_marginStart="24dp"
+                        android:paddingVertical="10dp"
+                        android:paddingHorizontal="20dp" />
+                </LinearLayout>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="21dp"
+                android:layout_marginStart="26dp"
+                android:orientation="vertical">
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Nuestro staff" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="41dp"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <ImageView
+                            android:layout_width="99dp"
+                            android:layout_height="99dp"
+                            android:layout_marginBottom="4dp"
+                            android:src="@mipmap/ic_launcher"
+                            android:scaleType="centerCrop" />
+                        <TextView
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="Martin Lopez" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <ImageView
+                            android:layout_width="99dp"
+                            android:layout_height="99dp"
+                            android:layout_marginBottom="4dp"
+                            android:src="@mipmap/ic_launcher"
+                            android:scaleType="centerCrop" />
+                        <TextView
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="José Gomez" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="26dp"
+                android:orientation="vertical"
+                android:layout_marginBottom="26dp">
+                <TextView
+                    android:textColor="#FFFFFF"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Promociones" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="#510C0C"
+                        app:cornerRadius="10dp"
+                        android:text=""
+                        android:minHeight="100dp"
+                        android:padding="0dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:paddingVertical="25dp">
+                        <TextView
+                            android:textColor="#9A2424"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="3dp"
+                            android:layout_marginStart="21dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="20% off" />
+                        <TextView
+                            android:textColor="#D7D7D7"
+                            android:textSize="16sp"
+                            android:layout_marginStart="22dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="en tu primera visita!" />
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

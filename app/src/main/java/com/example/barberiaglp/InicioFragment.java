@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import BD.AppDatabase;
 import Daos.UsuarioDao;
@@ -23,6 +22,7 @@ public class InicioFragment extends Fragment {
     AppDatabase db = AppDatabase.getInstance(getContext());
     UsuarioDao userDao = db.usuarioDao();
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,39 +33,27 @@ public class InicioFragment extends Fragment {
         // Recupera los datos guardados en SharedPreferences
         SharedPreferences preferences = requireActivity()
                 .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String nombreGuardado = preferences.getString("nombre", "Usuario");
+        bienvenido.setText("Bienvenido, "+ nombreGuardado+ "!");
         String mailGuardado = preferences.getString("email", "");
 
         new Thread(() -> {
             // Esta parte se ejecuta fuera del hilo principal
-            final Usuario usuario = userDao.findByEmail(mailGuardado); // Necesitarás un método findByEmail en tu DAO
+            final Usuario usuario = userDao.findByEmail(mailGuardado); // Necesitarás un metodo findByEmail en tu DAO
 
             // Para actualizar la UI, debes volver al hilo principal
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (usuario != null) {
-                        bienvenido.setText("¡Bienvenida, " + usuario.nombre + "!");
+                        bienvenido.setText("¡Bienvenido, " + usuario.nombre + "!");
                     } else {
                         // Opcional: manejar el caso de que no se encuentre el usuario
-                        bienvenido.setText("¡Bienvenida!");
+                        bienvenido.setText("¡Bienvenido!");
                     }
                 });
             }
         }).start();
         return v;
-    }
-
-    public void cerrarsesion(){
-        SharedPreferences preferences = requireActivity()
-                .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("isLoggedIn");
-        editor.remove("userEmail");
-        editor.remove("userName");
-        editor.apply();
-
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
-        getActivity().finish();
     }
 
 }

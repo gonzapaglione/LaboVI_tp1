@@ -9,16 +9,19 @@
     <string name="title_notifications">Notifications</string>
     <string name="input_mail">Email</string>
     <string name="email">Email</string>
-    <string name="contrase_a">Contraseña</string>
-    <string name="iniciar_sesi_n">Iniciar Sesión</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
     <string name="nombre">Nombre</string>
     <string name="apellido">Apellido</string>
-    <string name="repetir_contrase_a">Repetir contraseña</string>
+    <string name="repetir_contrasena">Repetir contraseña</string>
     <string name="registrarme">Registrarme</string>
     <string name="perfil">Perfil</string>
     <string name="mis_turnos">Mis Turnos</string>
     <string name="inicio">Inicio</string>
     <string name="servicios">Servicios</string>
+    <string name="forgotPassword">Olvidaste tu contraseña?</string>
+    <string name="rememberMe">Recordar mi sesión</string>
+    <string name="cerrarSesion">Cerrar sesión</string>
     <string name="Salir">Salir</string>
     <string name="crear_cuenta">Crear Cuenta</string>
 </resources>

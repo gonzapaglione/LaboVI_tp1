@@ -3,47 +3,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentoRegistrar"
+    android:fillViewport="true"
     android:background="#230F10"
-    android:fillViewport="true">
+    tools:context=".FragmentoRegistrar">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="start"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        tools:layout_editor_absoluteX="-11dp">
+        android:padding="24dp">
 
+        <!-- Nombre -->
         <TextView
-            android:id="@+id/textView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
             android:paddingBottom="4dp"
             android:text="@string/nombre"
-            android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/inputNombre"
             style="@style/CustomEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:hint="@string/nombre" />
+            android:hint="@string/nombre"
+            android:inputType="textPersonName"
+            android:drawablePadding="8dp" />
 
+        <!-- Apellido -->
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="12dp"
             android:paddingBottom="4dp"
             android:text="@string/apellido"
-            android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="12sp" />
 
@@ -52,18 +48,18 @@
             style="@style/CustomEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:hint="@string/apellido" />
+            android:hint="@string/apellido"
+            android:inputType="textPersonName"
+            android:drawablePadding="8dp" />
 
+        <!-- Email -->
         <TextView
-            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="12dp"
             android:paddingBottom="4dp"
             android:text="@string/email"
-            android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="12sp" />
 
@@ -73,36 +69,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:drawablePadding="8dp" />
 
+        <!-- Contraseña -->
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingTop="10dp"
-            android:text="@string/contrase_a"
-            android:textAllCaps="false"
+            android:paddingStart="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="4dp"
+            android:text="@string/contrasena"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"  />
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/inputPassword"
             style="@style/CustomEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/contrase_a"
-            android:inputType="textPassword" />
+            android:hint="@string/contrasena"
+            android:inputType="textPassword"
+            android:drawablePadding="8dp" />
 
+        <!-- Repetir Contraseña -->
         <TextView
-            android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingTop="10dp"
-            android:text="@string/repetir_contrase_a"
-            android:textAllCaps="false"
+            android:paddingStart="8dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="4dp"
+            android:text="@string/repetir_contrasena"
             android:textColor="#FFFFFF"
             android:textSize="12sp" />
 
@@ -111,23 +108,22 @@
             style="@style/CustomEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/contrase_a"
-            android:inputType="textPassword"/>
+            android:hint="@string/repetir_contrasena"
+            android:inputType="textPassword"
+            android:drawablePadding="8dp" />
 
+        <!-- Botón Registrarse -->
         <Button
             android:id="@+id/btnRegistrar"
-            android:layout_width="364dp"
-            android:layout_height="47dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
             android:background="@drawable/botones"
             android:text="@string/registrarme"
-            tools:layout_editor_absoluteX="26dp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="150dp"/>
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
-
-
 </ScrollView>
