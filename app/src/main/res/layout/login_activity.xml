@@ -7,57 +7,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#230F10"
-    android:fitsSystemWindows="true"
+    android:textAlignment="center"
     tools:context=".LoginActivity">
 
-    <!-- Imagen de portada -->
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/app_name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="390dp"
+        android:layout_height="278dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintDimensionRatio="H,16:9"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/fotoportada" />
 
-    <!-- Efecto de degradado sobre la imagen -->
-    <View
-        android:id="@+id/gradientOverlay"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@drawable/fade_gradient"
-        app:layout_constraintBottom_toBottomOf="@id/imageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Título -->
     <TextView
         android:id="@+id/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:text="@string/bienvenido_de_vuelta"
         android:textColor="#FFFFFF"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <!-- Contenedor del switch Login / Registrar -->
     <LinearLayout
         android:id="@+id/switchContainer"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_width="327dp"
+        android:layout_height="34dp"
         android:layout_marginTop="12dp"
-        android:layout_marginHorizontal="24dp"
         android:background="@drawable/switch_background"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/titulo"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -68,7 +53,11 @@
             android:layout_weight="1"
             android:gravity="center"
             android:background="@drawable/tab_left_selected"
-            android:text="Iniciar Sesión"
+            android:clickable="true"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:text="@string/iniciar_sesion"
+            android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -80,7 +69,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:background="@drawable/tab_right_unselected"
-            android:text="Crear Cuenta"
+            android:text="@string/crear_cuenta"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />

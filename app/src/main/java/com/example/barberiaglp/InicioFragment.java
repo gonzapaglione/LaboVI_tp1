@@ -28,10 +28,39 @@ public class InicioFragment extends Fragment {
                 .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String nombreGuardado = preferences.getString("nombre", "Usuario");
         bienvenido.setText("Bienvenido, "+ nombreGuardado+ "!");
+        String mailGuardado = preferences.getString("email", "");
 
+        new Thread(() -> {
+            // Esta parte se ejecuta fuera del hilo principal
+            final Usuario usuario = userDao.findByEmail(mailGuardado); // Necesitarás un método findByEmail en tu DAO
 
-        // Hacer que cuando se toque la campanita se muestren las notificaciones
+            // Para actualizar la UI, debes volver al hilo principal
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (usuario != null) {
+                        bienvenido.setText("¡Bienvenida, " + usuario.nombre + "!");
+                    } else {
+                        // Opcional: manejar el caso de que no se encuentre el usuario
+                        bienvenido.setText("¡Bienvenida!");
+                    }
+                });
+            }
+        }).start();
         return v;
+    }
+
+    public void cerrarsesion(){
+        SharedPreferences preferences = requireActivity()
+                .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("isLoggedIn");
+        editor.remove("userEmail");
+        editor.remove("userName");
+        editor.apply();
+
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
 }

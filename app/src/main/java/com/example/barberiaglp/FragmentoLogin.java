@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import BD.AppDatabase;
+import Modelos.Usuario;
+
 public class FragmentoLogin extends Fragment {
     public FragmentoLogin(){}
 
@@ -43,28 +46,20 @@ public class FragmentoLogin extends Fragment {
           Toast.makeText(getContext(), "Se deben completar los campos", Toast.LENGTH_SHORT).show();
           return;
       }
-        // Recupera los datos guardados en SharedPreferences
-        SharedPreferences preferences = requireActivity()
-                .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
 
-        String emailGuardado = preferences.getString("email", null);
-        String passwordGuardada = preferences.getString("password", null);
-        String nombreGuardado = preferences.getString("nombre", "Usuario");
+        AppDatabase db = AppDatabase.getInstance(getContext());
+        Usuario usuario = db.usuarioDao().login(emailIngresado, passwordIngresada);
 
-        // Verifica si existen datos guardados
-        if (emailGuardado == null || passwordGuardada == null) {
-            Toast.makeText(getContext(), "No hay usuarios registrados", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Compara con lo que ingresó el usuario
-        if (emailIngresado.equals(emailGuardado) && passwordIngresada.equals(passwordGuardada)) {
-            Toast.makeText(getContext(), "¡Bienvenido, " + nombreGuardado + " 👋!", Toast.LENGTH_LONG).show();
-            //derivar a MainActivity
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-
+        if (usuario != null) {
+            Toast.makeText(getContext(), "Bienvenida " + usuario.nombre, Toast.LENGTH_SHORT).show();
+            SharedPreferences preferences = requireActivity()
+                    .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("email", emailIngresado);
+            editor.putString("password", passwordIngresada);
+            editor.putBoolean("isLoggedIn", true); // Guardamos que la sesión está iniciada
+            editor.apply();
+            startActivity(new Intent(getActivity(), MainActivity.class));
         } else {
             Toast.makeText(getContext(), "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
         }

@@ -1,7 +1,5 @@
 package com.example.barberiaglp;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -10,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import BD.AppDatabase;
+import Daos.UsuarioDao;
+import Modelos.Usuario;
 
 public class FragmentoRegistrar extends Fragment {
 
@@ -64,27 +64,26 @@ public class FragmentoRegistrar extends Fragment {
             return;
         }
 
-        // Obtener SharedPreferences
-        SharedPreferences preferences = requireActivity()
-                .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        //guardar datos en la base de datos
+        AppDatabase db = AppDatabase.getInstance(getContext());
+        UsuarioDao userDao = db.usuarioDao();
 
-        // Abrir editor
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.putString("nombre", nombre);
-        editor.putString("apellido", apellido);
-        editor.putString("email", email);
-        editor.putString("password", password);
-        editor.apply();
-
+        Usuario nuevo = new Usuario();
+        nuevo.nombre = nombre;
+        nuevo.apellido = apellido;
+        nuevo.email = email;
+        nuevo.password = password;
+        nuevo.rol = "Cliente";
+        userDao.insert(nuevo);
         Toast.makeText(getContext(), "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
 
-        // (Opcional) limpiar campos
+        //limpiar inputs
         etNombre.setText("");
         etEmail.setText("");
         etPassword.setText("");
         etApellido.setText("");
         etPassword2.setText("");
+
 
     }
 }

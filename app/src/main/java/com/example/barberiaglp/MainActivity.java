@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
             // false => icons will be light (suitable for dark backgrounds)
             windowInsetsController.setAppearanceLightStatusBars(false);
         }
+        verificarSesion();
+
         //Botones
         navInicio = findViewById(R.id.navInicio);
         navTurnos = findViewById(R.id.navTurnos);
@@ -83,6 +85,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private void verificarSesion() {
+        // Obtiene el archivo de preferencias "UserPrefs"
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+
+        // Lee el valor booleano de "isLoggedIn". Si no existe, devuelve 'false' por defecto.
+        boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
+
+        if (!isLoggedIn) {
+            // Si el usuario NO ha iniciado sesión:
+            // 1. Inicia la actividad de Login.
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            // 2. Añade flags para limpiar el historial de actividades.
+            //    Así, el usuario no puede volver a la MainActivity con el botón de "atrás".
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            // 3. Finaliza la MainActivity actual para que no se quede en segundo plano.
+            finish();
+        }
+    }
+
 
     private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()
