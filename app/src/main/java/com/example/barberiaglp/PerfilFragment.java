@@ -11,14 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 
 
 public class PerfilFragment extends Fragment {
     public PerfilFragment(){}
 
     Button logOut;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
