@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/rounded_background"
+    android:padding="8dp">
+
+    <!-- Info -->
+<LinearLayout
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:layout_weight="1"
+android:orientation="vertical"
+android:layout_marginEnd="8dp">
+
+<TextView
+    android:id="@+id/tvServicioTitulo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Título del servicio"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textColor="@android:color/white"/>
+
+<TextView
+    android:id="@+id/tvServicioDescripcion"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Descripción del servicio"
+    android:textSize="12sp"
+    android:textColor="#CCCCCC"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="8dp"/>
+
+<TextView
+    android:id="@+id/tvServicioPrecio"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="$0000"
+    android:textColor="#CF0008"
+    android:textStyle="bold"
+    android:textSize="14sp"/>
+</LinearLayout>
+
+    <!-- Imagen -->
+<ImageView
+android:id="@+id/imgServicio"
+android:layout_width="120dp"
+android:layout_height="80dp"
+android:scaleType="centerCrop"
+android:src="@mipmap/ic_launcher"/>
+</LinearLayout>
