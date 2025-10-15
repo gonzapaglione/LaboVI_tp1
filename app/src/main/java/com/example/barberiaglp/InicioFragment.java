@@ -29,13 +29,8 @@ public class InicioFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_inicio, container, false);
 
         bienvenido = v.findViewById(R.id.textBienvenida);
-
-        // Recupera los datos guardados en SharedPreferences
-        SharedPreferences preferences = requireActivity()
-                .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        String nombreGuardado = preferences.getString("nombre", "Usuario");
-        bienvenido.setText("Bienvenido, "+ nombreGuardado+ "!");
-        String mailGuardado = preferences.getString("email", "");
+        SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String mailGuardado = preferences.getString("userEmail", "");
 
         new Thread(() -> {
             // Esta parte se ejecuta fuera del hilo principal

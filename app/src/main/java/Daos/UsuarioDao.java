@@ -26,4 +26,8 @@ public interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios")
     LiveData<List<Usuario>> getAllUsersAsLiveData();
+
+    //temporal para las pruebas con la base de datos
+    @Query("DELETE FROM usuarios")
+    void deleteAll();
 }

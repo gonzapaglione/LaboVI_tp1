@@ -14,7 +14,7 @@ public class Usuario {
     public String email;
     public String password;
     public String rol;
-//agregar fechas
-//   public String fechaRegistro;
-//   public String fechaNacimiento;
+
+   public String fechaRegistro;
+   public String fechaNacimiento;
 }

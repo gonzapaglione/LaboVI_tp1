@@ -17,7 +17,7 @@ import Modelos.Servicio;
 import Modelos.Turno;
 import Modelos.Usuario;
 
-@Database(entities = {Usuario.class, Servicio.class, Turno.class, Horario.class}, version = 2)
+@Database(entities = {Usuario.class, Servicio.class, Turno.class, Horario.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instancia;
