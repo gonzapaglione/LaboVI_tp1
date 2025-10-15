@@ -1,5 +1,8 @@
 package com.example.barberiaglp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        chequearSesion();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity); // Asegúrate de que el nombre sea correcto
 
@@ -27,6 +31,17 @@ public class LoginActivity extends AppCompatActivity {
         // Eventos de click
         btnLogin.setOnClickListener(v -> showLogin());
         btnRegister.setOnClickListener(v -> showRegister());
+    }
+
+    private void chequearSesion() {
+        SharedPreferences preferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        // Lee el valor booleano de "isLoggedIn". Si no existe, devuelve 'false' por defecto.
+        boolean recordar = preferences.getBoolean("rememberMe", false);
+        if(recordar){
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class );
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
     }
 
     private void showLogin() {

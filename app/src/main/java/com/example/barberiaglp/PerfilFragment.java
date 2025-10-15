@@ -58,6 +58,9 @@ public class PerfilFragment extends Fragment {
                 .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isLoggedIn", false);
+        editor.remove("userEmail");
+        editor.remove("userPassword");
+        editor.putBoolean("rememberMe", false);
         editor.apply();
 
         Intent intent = new Intent(getActivity(), LoginActivity.class);
