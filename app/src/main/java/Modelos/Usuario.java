@@ -15,4 +15,6 @@ public class Usuario {
     public String password;
     public String rol;
 
+   public String fechaRegistro;
+   public String fechaNacimiento;
 }

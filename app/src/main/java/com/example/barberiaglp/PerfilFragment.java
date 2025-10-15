@@ -15,13 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import Repositorios.UsuarioRepositorio;
 
 import androidx.appcompat.app.AlertDialog; // Asegúrate de importar esto
 
 public class PerfilFragment extends Fragment {
     public PerfilFragment(){}
 
-    Button logOut;
+    Button logOut, btnBorrarTodo;
+    private UsuarioRepositorio usuarioRepo;
+    TextView fechadesde;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,6 +36,22 @@ public class PerfilFragment extends Fragment {
         logOut = view.findViewById(R.id.btnLogOut);
 
         logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
+        fechadesde = view.findViewById(R.id.fechaClienteDesde);
+        usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
+        //temporal para las pruebas con la base de datos para eliminar tdos los usuarios
+        btnBorrarTodo = view.findViewById(R.id.btnBorrarTodo);
+        btnBorrarTodo.setOnClickListener(v -> {
+            usuarioRepo.deleteAllUsers();
+            Toast.makeText(getContext(), "¡Tabla de usuarios borrada!", Toast.LENGTH_SHORT).show();
+            // Después de borrar, es buena idea cerrar sesión para evitar errores
+            cerrarsesion();
+        });
+
+        // <-- 4. LLAMA AL NUEVO MÉTODO PARA CARGAR LOS DATOS
+        colocarDatosUsuario();
+
+        // 3 Le asignás el listener
+        logOut.setOnClickListener(v -> cerrarsesion());
 
         return view;
     }
@@ -69,13 +91,31 @@ public class PerfilFragment extends Fragment {
         SharedPreferences preferences = requireActivity()
                 .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("isLoggedIn");
-        editor.remove("userEmail");
-        editor.remove("userName");
+        editor.putBoolean("isLoggedIn", false);
         editor.apply();
 
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
         getActivity().finish();
+    }
+
+    public void colocarDatosUsuario() {
+        // Llama al método asíncrono del repositorio para obtener el usuario actual
+        usuarioRepo.getUsuarioActual(usuarioActual -> {
+            // Este código se ejecuta cuando el repositorio devuelve el usuario.
+            // Es crucial volver al hilo de la UI para actualizar la vista.
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    if (usuarioActual != null) {
+                        // El usuario se encontró, ahora actualizamos la interfaz
+                        String textoFecha = usuarioActual.fechaRegistro;
+                        fechadesde.setText(textoFecha);
+                    } else {
+                        // Si por alguna razón no se encuentra el usuario
+                        fechadesde.setText("Fecha no disponible");
+                    }
+                });
+            }
+        });
     }
 }

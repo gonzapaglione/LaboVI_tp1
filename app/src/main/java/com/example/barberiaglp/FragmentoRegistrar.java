@@ -1,5 +1,6 @@
 package com.example.barberiaglp;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -11,14 +12,20 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import BD.AppDatabase;
-import Daos.UsuarioDao;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import Modelos.Usuario;
+import Repositorios.UsuarioRepositorio;
 
 public class FragmentoRegistrar extends Fragment {
 
     private EditText etNombre, etEmail, etPassword, etApellido, etPassword2;
     private Button btnRegistrar;
+
+    private UsuarioRepositorio usuarioRepo;
 
     public FragmentoRegistrar(){}
 
@@ -33,6 +40,10 @@ public class FragmentoRegistrar extends Fragment {
         etEmail = view.findViewById(R.id.inputMail);
         etPassword = view.findViewById(R.id.inputPassword);
         etPassword2 = view.findViewById(R.id.inputPassword2);
+
+        //Inicializar el repositorio
+        Application application = requireActivity().getApplication();
+        usuarioRepo = new UsuarioRepositorio(application);
 
         btnRegistrar = view.findViewById(R.id.btnRegistrar);
         btnRegistrar.setOnClickListener(v -> guardarDatos());
@@ -64,18 +75,32 @@ public class FragmentoRegistrar extends Fragment {
             return;
         }
 
-        //guardar datos en la base de datos
-        AppDatabase db = AppDatabase.getInstance(getContext());
-        UsuarioDao userDao = db.usuarioDao();
-
         Usuario nuevo = new Usuario();
         nuevo.nombre = nombre;
         nuevo.apellido = apellido;
         nuevo.email = email;
         nuevo.password = password;
         nuevo.rol = "Cliente";
-        userDao.insert(nuevo);
-        Toast.makeText(getContext(), "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            java.time.LocalDate hoy = java.time.LocalDate.now(); // obtiene fecha de hoy
+            // 1. Extrae las partes de la fecha
+            int dia = hoy.getDayOfMonth();
+            String mes = hoy.getMonth().getDisplayName(java.time.format.TextStyle.FULL, new Locale("es", "ES"));
+            int anio = hoy.getYear();
+
+            // 2. Construye el String final
+            String mesCapitalizado = mes.substring(0, 1).toUpperCase() + mes.substring(1);
+            nuevo.fechaRegistro = dia + " de " + mesCapitalizado + ", " + anio;
+
+        } else {
+            // Para versiones de Android más antiguas (API < 26)
+            // 1. Define el formato de salida deseado
+            SimpleDateFormat sdf = new SimpleDateFormat("d 'de' MMMM, yyyy", new Locale("es", "ES"));
+            // 2. Formatea la fecha de hoy y la guarda
+            nuevo.fechaRegistro = sdf.format(new java.util.Date());
+        }
+        usuarioRepo.insert(nuevo);
+        Toast.makeText(getContext(), "Usuario registrado correctamente: "+ nuevo.fechaRegistro, Toast.LENGTH_SHORT).show();
 
         //limpiar inputs
         etNombre.setText("");

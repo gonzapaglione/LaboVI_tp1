@@ -23,4 +23,6 @@ public class Turno {
     public String fecha;      // Ej: "2025-10-10"
     public String horaInicio; // Ej: "10:00"
     public String horaFin;    // Calculada según duración del servicio
+    public String estado;     // "pendiente", "atendido", "cancelado"
+
 }

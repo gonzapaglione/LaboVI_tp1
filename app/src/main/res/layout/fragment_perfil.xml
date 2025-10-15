@@ -228,17 +228,18 @@
                         android:gravity="center"
                         android:text="Cliente desde: "
                         />
+
                     <TextView
-                        android:textColor="#EDEDED"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:layout_marginEnd="25dp"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/fechaClienteDesde"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="25dp"
                         android:layout_weight="1"
                         android:gravity="right"
                         android:text="15 de Febrero, 2025"
-                        />
+                        android:textColor="#EDEDED"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -385,7 +386,18 @@
                     android:textColor="#FFFFFF" />
 
             </LinearLayout>
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnBorrarTodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BORRAR TODOS LOS USUARIOS (TEST)"
+            app:backgroundTint="@android:color/holo_red_dark"
+            app:layout_constraintTop_toBottomOf="@id/btnLogOut"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
 
 
 </androidx.core.widget.NestedScrollView>

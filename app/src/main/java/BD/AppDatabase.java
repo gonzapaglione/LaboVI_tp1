@@ -4,6 +4,9 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 import Daos.HorarioDao;
 import Daos.ServicioDao;
@@ -14,10 +17,13 @@ import Modelos.Servicio;
 import Modelos.Turno;
 import Modelos.Usuario;
 
-@Database(entities = {Usuario.class, Servicio.class, Turno.class, Horario.class}, version = 2)
+@Database(entities = {Usuario.class, Servicio.class, Turno.class, Horario.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instancia;
+    public static final ExecutorService databaseWriteExecutor =
+            Executors.newFixedThreadPool(4);
+
 
     public abstract UsuarioDao usuarioDao();
     public abstract ServicioDao servicioDao();

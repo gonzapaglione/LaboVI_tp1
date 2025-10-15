@@ -11,4 +11,5 @@ public class Servicio {
     public String nombre;
     public int duracionMin; // duración en minutos
     public double precio;
+    public String descripcion;
 }
