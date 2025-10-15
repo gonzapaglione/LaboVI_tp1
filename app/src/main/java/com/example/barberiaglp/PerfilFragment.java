@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import Repositorios.UsuarioRepositorio;
@@ -51,7 +50,7 @@ public class PerfilFragment extends Fragment {
         colocarDatosUsuario();
 
         // 3 Le asignás el listener
-        logOut.setOnClickListener(v -> cerrarsesion());
+        logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
 
         return view;
     }
@@ -100,7 +99,7 @@ public class PerfilFragment extends Fragment {
     }
 
     public void colocarDatosUsuario() {
-        // Llama al método asíncrono del repositorio para obtener el usuario actual
+        // Llama al metodo asincrono del repositorio para obtener el usuario actual
         usuarioRepo.getUsuarioActual(usuarioActual -> {
             // Este código se ejecuta cuando el repositorio devuelve el usuario.
             // Es crucial volver al hilo de la UI para actualizar la vista.
