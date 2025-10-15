@@ -3,13 +3,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#230F10"
+    android:background="@color/red_background"
     tools:context=".ServiciosFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Aqui van los servicios" />
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="24dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Título principal -->
+            <TextView
+                android:id="@+id/tvTituloServicios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nuestros servicios"
+                android:textColor="@android:color/white"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- Servicio 1 -->
+            <include
+                layout="@layout/item_servicio"
+                android:id="@+id/servicioCorte"
+                android:layout_marginBottom="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Servicio 2 -->
+            <include
+                layout="@layout/item_servicio"
+                android:id="@+id/servicioBarba"
+                android:layout_marginBottom="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Servicio 3 -->
+            <include
+                layout="@layout/item_servicio"
+                android:id="@+id/servicioPremium"
+                android:layout_marginBottom="48dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- Separador -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#424242"
+                android:layout_marginBottom="16dp"/>
+
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>
