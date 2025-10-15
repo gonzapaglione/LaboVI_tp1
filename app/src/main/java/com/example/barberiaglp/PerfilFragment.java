@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 
 
 public class PerfilFragment extends Fragment {
     public PerfilFragment(){}
 
     Button logOut;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,9 +39,7 @@ public class PerfilFragment extends Fragment {
         SharedPreferences preferences = requireActivity()
                 .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("isLoggedIn");
-        editor.remove("userEmail");
-        editor.remove("userName");
+        editor.putBoolean("isLoggedIn", false);
         editor.apply();
 
         Intent intent = new Intent(getActivity(), LoginActivity.class);
