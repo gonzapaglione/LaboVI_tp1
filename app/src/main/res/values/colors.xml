@@ -8,4 +8,6 @@
     <color name="red_3">#361313</color>
     <color name="red_4">#9A2424</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray">#838383</color>
+
 </resources>

@@ -3,17 +3,21 @@ package com.example.barberiaglp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +30,11 @@ public class PerfilFragment extends Fragment {
 
     Button logOut, btnBorrarTodo;
     private UsuarioRepositorio usuarioRepo;
-    TextView fechadesde;
+    TextView fechadesde, editar;
+    EditText nombre, apellido, email, password;
+
+    ImageButton btnTogglePassword; // <-- AÑADE ESTA LÍNEA
+    private boolean isPasswordVisible = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +44,19 @@ public class PerfilFragment extends Fragment {
 
         logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
         fechadesde = view.findViewById(R.id.fechaClienteDesde);
+        nombre = view.findViewById(R.id.inputNombre);
+        apellido = view.findViewById(R.id.inputApellido);
+        email = view.findViewById(R.id.inputMail);
+        password = view.findViewById(R.id.etPassword);
+        editar = view.findViewById(R.id.editarDatosPerfil);
+
+        editar.setOnClickListener(v -> activarEdicion(v));
+        btnTogglePassword = view.findViewById(R.id.btnTogglePassword);
+
+        btnTogglePassword.setOnClickListener(v -> {
+            togglePasswordVisibility();
+        });
+
         usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
         //temporal para las pruebas con la base de datos para eliminar tdos los usuarios
         btnBorrarTodo = view.findViewById(R.id.btnBorrarTodo);
@@ -112,6 +133,10 @@ public class PerfilFragment extends Fragment {
                         // El usuario se encontró, ahora actualizamos la interfaz
                         String textoFecha = usuarioActual.fechaRegistro;
                         fechadesde.setText(textoFecha);
+                        nombre.setText(usuarioActual.nombre);
+                        apellido.setText(usuarioActual.apellido);
+                        email.setText(usuarioActual.email);
+                        password.setText(usuarioActual.password);
                     } else {
                         // Si por alguna razón no se encuentra el usuario
                         fechadesde.setText("Fecha no disponible");
@@ -120,4 +145,113 @@ public class PerfilFragment extends Fragment {
             }
         });
     }
+
+    public void activarEdicion(View v) {
+        // Obtenemos el texto actual del TextView para decidir qué hacer
+        String estadoActual = editar.getText().toString();
+
+        if (estadoActual.equalsIgnoreCase("Editar")) {
+            // --- MODO EDICIÓN ---
+            // Cambiamos el texto del botón
+            editar.setText("Guardar");
+
+            // Habilitamos los campos para que se puedan editar
+            nombre.setEnabled(true);
+            apellido.setEnabled(true);
+            // El email generalmente no se permite cambiar, pero lo dejamos según tu código
+            email.setEnabled(true);
+            password.setEnabled(true);
+
+            // Opcional: Pon el foco en el primer campo editable para una mejor UX
+            nombre.requestFocus();
+
+            // Cambia el color del texto para que se vea que es editable (opcional)
+            int colorBlanco = getResources().getColor(android.R.color.white, null);
+            nombre.setTextColor(colorBlanco);
+            apellido.setTextColor(colorBlanco);
+            email.setTextColor(colorBlanco);
+            password.setTextColor(colorBlanco);
+
+        } else if (estadoActual.equalsIgnoreCase("Guardar")) {
+            // --- MODO GUARDAR ---
+            guardarCambios();
+        }
+    }
+
+    private void guardarCambios() {
+        // Llamamos a getUsuarioActual para tener el objeto de usuario más reciente
+        usuarioRepo.getUsuarioActual(usuarioActual -> {
+            if (usuarioActual != null) {
+                // 1. Actualizamos el objeto 'usuario' en memoria con los nuevos datos de los EditText
+                usuarioActual.nombre = nombre.getText().toString();
+                usuarioActual.apellido = apellido.getText().toString();
+                usuarioActual.email = email.getText().toString();
+                usuarioActual.password = password.getText().toString();
+
+                // 2. Le pasamos el objeto actualizado al repositorio para que lo guarde en la BD
+                usuarioRepo.update(usuarioActual);
+
+                // 3. Volvemos al hilo de la UI para restaurar el estado visual
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        restaurarEstadoVisual();
+                        Toast.makeText(getContext(), "Datos actualizados correctamente", Toast.LENGTH_SHORT).show();
+                    });
+                }
+            } else {
+                // Manejar caso de error (aunque es poco probable si ya estabas en el perfil)
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        Toast.makeText(getContext(), "Error: No se pudo encontrar el usuario para actualizar", Toast.LENGTH_LONG).show();
+                    });
+                }
+            }
+        });
+    }
+
+    private void restaurarEstadoVisual() {
+        // Cambiamos el texto del botón de vuelta a "Editar"
+        editar.setText("Editar");
+
+        // Deshabilitamos los campos nuevamente
+        nombre.setEnabled(false);
+        apellido.setEnabled(false);
+        email.setEnabled(false);
+        password.setEnabled(false);
+
+        // Restauramos el color del texto a un gris para indicar que no es editable (opcional)
+        int colorGris = getResources().getColor(android.R.color.darker_gray, null);
+        nombre.setTextColor(colorGris);
+        apellido.setTextColor(colorGris);
+        email.setTextColor(colorGris);
+        password.setTextColor(colorGris);
+    }
+
+    private void togglePasswordVisibility() {
+        // Invertimos el estado actual
+        isPasswordVisible = !isPasswordVisible;
+
+        if (isPasswordVisible) {
+            // --- MOSTRAR CONTRASEÑA ---
+            // 1. Cambiamos el InputType para que el texto sea visible.
+            //    Usamos TYPE_CLASS_TEXT | TYPE_TEXT_VARIATION_VISIBLE_PASSWORD.
+            password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+
+            // 2. Cambiamos el icono al ojo "tachado" (visibility_off).
+            btnTogglePassword.setImageResource(R.drawable.ic_visibility_off);
+
+        } else {
+            // --- OCULTAR CONTRASEÑA ---
+            // 1. Restauramos el InputType para que se muestre como contraseña (puntos).
+            password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+            // 2. Cambiamos el icono de vuelta al ojo "normal" (visibility_on).
+            btnTogglePassword.setImageResource(R.drawable.ic_visibility_on);
+        }
+
+        // MUY IMPORTANTE: Después de cambiar el InputType, debemos mover el cursor al final
+        // del texto para que el usuario no se desoriente.
+        password.setSelection(password.getText().length());
+    }
+
 }

@@ -37,11 +37,12 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/editarDatosPerfil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Editar"
                 android:clickable="true"
                 android:focusable="true"
+                android:text="Editar"
                 android:textColor="#760106"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -63,27 +64,29 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_width="152dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="296dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Nombre" />
+                    android:layout_marginBottom="10dp"
+                    android:text="Nombre"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
                 <EditText
-                    android:inputType="text"
-                    android:hint="John"
-                    android:textColorHint="#FFFFFF"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
+                    android:id="@+id/inputNombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_background_dark"
+                    android:hint="John"
+                    android:inputType="text"
+                    android:enabled="false"
                     android:paddingVertical="19dp"
                     android:paddingLeft="18dp"
-                    android:paddingRight="36dp" />
+                    android:paddingRight="36dp"
+                    android:textColor="@color/gray"
+                    android:textColorHint="@color/gray"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -93,27 +96,29 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_width="152dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="294dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Apellido" />
+                    android:layout_marginBottom="10dp"
+                    android:text="Apellido"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
                 <EditText
-                    android:inputType="text"
-                    android:hint="Doe"
-                    android:textColorHint="#FFFFFF"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
+                    android:id="@+id/inputApellido"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_background_dark"
+                    android:hint="Doe"
+                    android:enabled="false"
+                    android:inputType="text"
                     android:paddingVertical="19dp"
                     android:paddingLeft="18dp"
-                    android:paddingRight="36dp" />
+                    android:paddingRight="36dp"
+                    android:textColor="@color/gray"
+                    android:textColorHint="@color/gray"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -123,27 +128,29 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_width="156dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="316dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Email" />
+                    android:layout_marginBottom="10dp"
+                    android:text="Email"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
                 <EditText
-                    android:inputType="text"
-                    android:hint="johndoe@gmail.com"
-                    android:textColorHint="#FFFFFF"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
+                    android:id="@+id/inputMail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_background_dark"
+                    android:hint="johndoe@gmail.com"
+                    android:inputType="text"
+                    android:enabled="false"
                     android:paddingVertical="19dp"
                     android:paddingLeft="18dp"
-                    android:paddingRight="36dp" />
+                    android:paddingRight="36dp"
+                    android:textColor="@color/gray"
+                    android:textColorHint="@color/gray"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -152,12 +159,12 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="9dp"
+                    android:layout_width="154dp"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="Contraseña" />
+                    android:layout_marginBottom="9dp"
+                    android:text="Contraseña"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -171,11 +178,12 @@
                         android:paddingVertical="16dp"
                         android:paddingStart="19dp"
                         android:paddingEnd="48dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:inputType="textPassword"
-                    android:hint="************"
-                    android:textColorHint="@color/white"
+                        android:textColor="@color/gray"
+                        android:textSize="16sp"
+                        android:inputType="textPassword"
+                        android:hint="************"
+                        android:enabled="false"
+                        android:textColorHint="@color/gray"
                         android:gravity="center_vertical" />
 
                     <ImageButton
@@ -217,17 +225,17 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:orientation="horizontal">
+
                     <TextView
-                        android:textColor="#C7C7C7"
-                        android:textSize="16sp"
+                        android:layout_width="257dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="4dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="Cliente desde: "
-                        />
+                        android:textColor="#C7C7C7"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/fechaClienteDesde"

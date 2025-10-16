@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
+
 import java.util.List;
 import Modelos.Usuario;
 
@@ -30,4 +32,7 @@ public interface UsuarioDao {
     //temporal para las pruebas con la base de datos
     @Query("DELETE FROM usuarios")
     void deleteAll();
+
+    @Update
+    void update(Usuario usuario);
 }
