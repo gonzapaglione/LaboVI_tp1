@@ -24,7 +24,7 @@ public interface UsuarioDao {
     Usuario findByEmail(String email);
 
     @Query("SELECT * FROM usuarios WHERE rol = :rol")
-    List<Usuario> obtenerPorRol(String rol);
+    List<Usuario> findByRole(String rol);
 
     @Query("SELECT * FROM usuarios")
     LiveData<List<Usuario>> getAllUsersAsLiveData();
