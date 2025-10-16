@@ -19,6 +19,8 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 
+import BD.DataSeeder;
+
 public class MainActivity extends AppCompatActivity {
 
     LinearLayout navInicio, navTurnos, navServicios, navPerfil;
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Carga de valores predeterminados en la bd
+        DataSeeder.cargarDatos(this);
 
         //Esto es para que el nav no tape el contenido del fragmento
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.fragmentContainer), (v, insets) -> {
