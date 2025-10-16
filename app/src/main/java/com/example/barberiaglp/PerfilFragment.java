@@ -67,7 +67,7 @@ public class PerfilFragment extends Fragment {
             cerrarsesion();
         });
 
-        // <-- 4. LLAMA AL NUEVO MÉTODO PARA CARGAR LOS DATOS
+        // <-- 4. LLAMA AL NUEVO METODO PARA CARGAR LOS DATOS
         colocarDatosUsuario();
 
         // 3 Le asignás el listener

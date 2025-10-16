@@ -20,7 +20,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity); // Asegúrate de que el nombre sea correcto
 
-        // Asegurate que estos IDs coincidan EXACTAMENTE con los del XML
         btnLogin = findViewById(R.id.btnLoginTab);
         btnRegister = findViewById(R.id.btnRegistrar);
 

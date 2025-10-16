@@ -1,61 +1,46 @@
 package com.example.barberiaglp;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import java.util.List;
+
+import BD.AppDatabase;
+import Modelos.Servicio;
 
 public class ServiciosFragment extends Fragment {
+
+    private RecyclerView recyclerServicios;
+    private ServicioAdapter adapter;
 
     public ServiciosFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_servicios, container, false);
 
-        // Servicio 1: Corte
-        View servicioCorte = view.findViewById(R.id.servicioCorte);
-        ImageView imgCorte = servicioCorte.findViewById(R.id.imgServicio);
-        TextView tvCorteNombre = servicioCorte.findViewById(R.id.tvServicioTitulo);
-        TextView tvCorteDesc = servicioCorte.findViewById(R.id.tvServicioDescripcion);
-        TextView tvCortePrecio = servicioCorte.findViewById(R.id.tvServicioPrecio);
+        recyclerServicios = view.findViewById(R.id.recyclerServicios);
+        recyclerServicios.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        imgCorte.setImageResource(R.drawable.fotocorte);
-        tvCorteNombre.setText("Corte de cabello");
-        tvCorteDesc.setText("Cortes clásicos y modernos adaptados a tu estilo.");
-        tvCortePrecio.setText("$7000");
+        // Cargar servicios desde la base de datos en un hilo separado
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            List<Servicio> servicios = AppDatabase.getInstance(requireContext())
+                    .servicioDao().obtenerTodos();
 
+            requireActivity().runOnUiThread(() -> {
+                adapter = new ServicioAdapter(servicios);
+                recyclerServicios.setAdapter(adapter);
+            });
+        });
 
-        // Servicio 2: Barba
-        View servicioBarba = view.findViewById(R.id.servicioBarba);
-        ImageView imgBarba = servicioBarba.findViewById(R.id.imgServicio);
-        TextView tvBarbaNombre = servicioBarba.findViewById(R.id.tvServicioTitulo);
-        TextView tvBarbaDesc = servicioBarba.findViewById(R.id.tvServicioDescripcion);
-        TextView tvBarbaPrecio = servicioBarba.findViewById(R.id.tvServicioPrecio);
-
-        imgBarba.setImageResource(R.drawable.fotobarba);
-        tvBarbaNombre.setText("Perfilado de barba");
-        tvBarbaDesc.setText("Definí tu estilo con un perfilado preciso y prolijo.");
-        tvBarbaPrecio.setText("$9000");
-
-        // Servicio 3: Premium
-        View servicioPremium = view.findViewById(R.id.servicioPremium);
-        ImageView imgPremium = servicioPremium.findViewById(R.id.imgServicio);
-        TextView tvPremiumNombre = servicioPremium.findViewById(R.id.tvServicioTitulo);
-        TextView tvPremiumDesc = servicioPremium.findViewById(R.id.tvServicioDescripcion);
-        TextView tvPremiumPrecio = servicioPremium.findViewById(R.id.tvServicioPrecio);
-
-        imgPremium.setImageResource(R.drawable.fotocortebarba);
-        tvPremiumNombre.setText("Corte + Barba");
-        tvPremiumDesc.setText("Experiencia completa con un corte moderno a tijera y/o maquina + perfilado de barba.");
-        tvPremiumPrecio.setText("$11000");
         return view;
     }
 }
