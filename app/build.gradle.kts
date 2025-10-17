@@ -43,6 +43,10 @@ dependencies {
     annotationProcessor ("androidx.room:room-compiler:$room_version")
     implementation ("androidx.room:room-ktx:$room_version")
     testImplementation ("androidx.room:room-testing:$room_version")
+    //FAB
+    implementation("com.google.android.material:material:1.12.0")
+    //RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)
