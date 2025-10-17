@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         // Asegurar que los iconos de la barra de estado sean claros (blancos)
         WindowInsetsControllerCompat windowInsetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
         if (windowInsetsController != null) {
-            // false => icons will be light (suitable for dark backgrounds)
             windowInsetsController.setAppearanceLightStatusBars(false);
         }
         verificarSesion();
@@ -104,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
             // 1. Inicia la actividad de Login.
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             // 2. Añade flags para limpiar el historial de actividades.
-            //    Así, el usuario no puede volver a la MainActivity con el botón de "atrás".
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             // 3. Finaliza la MainActivity actual para que no se quede en segundo plano.

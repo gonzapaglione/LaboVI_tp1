@@ -3,7 +3,6 @@ package com.example.barberiaglp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -23,7 +22,7 @@ import android.widget.Toast;
 
 import Repositorios.UsuarioRepositorio;
 
-import androidx.appcompat.app.AlertDialog; // Asegúrate de importar esto
+import androidx.appcompat.app.AlertDialog;
 
 public class PerfilFragment extends Fragment {
     public PerfilFragment(){}
@@ -33,7 +32,7 @@ public class PerfilFragment extends Fragment {
     TextView fechadesde, editar;
     EditText nombre, apellido, email, password;
 
-    ImageButton btnTogglePassword; // <-- AÑADE ESTA LÍNEA
+    ImageButton btnTogglePassword;
     private boolean isPasswordVisible = false;
 
     @Override
@@ -63,11 +62,10 @@ public class PerfilFragment extends Fragment {
         btnBorrarTodo.setOnClickListener(v -> {
             usuarioRepo.deleteAllUsers();
             Toast.makeText(getContext(), "¡Tabla de usuarios borrada!", Toast.LENGTH_SHORT).show();
-            // Después de borrar, es buena idea cerrar sesión para evitar errores
             cerrarsesion();
         });
 
-        // <-- 4. LLAMA AL NUEVO METODO PARA CARGAR LOS DATOS
+        // 4. Llama al nuevo metodo para cargar los datos
         colocarDatosUsuario();
 
         // 3 Le asignás el listener
@@ -126,11 +124,10 @@ public class PerfilFragment extends Fragment {
         // Llama al metodo asincrono del repositorio para obtener el usuario actual
         usuarioRepo.getUsuarioActual(usuarioActual -> {
             // Este código se ejecuta cuando el repositorio devuelve el usuario.
-            // Es crucial volver al hilo de la UI para actualizar la vista.
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (usuarioActual != null) {
-                        // El usuario se encontró, ahora actualizamos la interfaz
+                        // Usuario encontrado, ahora actualizamos la interfaz
                         String textoFecha = usuarioActual.fechaRegistro;
                         fechadesde.setText(textoFecha);
                         nombre.setText(usuarioActual.nombre);
@@ -151,21 +148,18 @@ public class PerfilFragment extends Fragment {
         String estadoActual = editar.getText().toString();
 
         if (estadoActual.equalsIgnoreCase("Editar")) {
-            // --- MODO EDICIÓN ---
             // Cambiamos el texto del botón
             editar.setText("Guardar");
 
             // Habilitamos los campos para que se puedan editar
             nombre.setEnabled(true);
             apellido.setEnabled(true);
-            // El email generalmente no se permite cambiar, pero lo dejamos según tu código
             email.setEnabled(true);
             password.setEnabled(true);
 
-            // Opcional: Pon el foco en el primer campo editable para una mejor UX
             nombre.requestFocus();
 
-            // Cambia el color del texto para que se vea que es editable (opcional)
+            // Cambia el color del texto para que se vea que es editable
             int colorBlanco = getResources().getColor(android.R.color.white, null);
             nombre.setTextColor(colorBlanco);
             apellido.setTextColor(colorBlanco);
@@ -173,7 +167,6 @@ public class PerfilFragment extends Fragment {
             password.setTextColor(colorBlanco);
 
         } else if (estadoActual.equalsIgnoreCase("Guardar")) {
-            // --- MODO GUARDAR ---
             guardarCambios();
         }
     }
@@ -191,7 +184,6 @@ public class PerfilFragment extends Fragment {
                 // 2. Le pasamos el objeto actualizado al repositorio para que lo guarde en la BD
                 usuarioRepo.update(usuarioActual);
 
-                // 3. Volvemos al hilo de la UI para restaurar el estado visual
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         restaurarEstadoVisual();
@@ -199,7 +191,7 @@ public class PerfilFragment extends Fragment {
                     });
                 }
             } else {
-                // Manejar caso de error (aunque es poco probable si ya estabas en el perfil)
+                // Manejar caso de error
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         Toast.makeText(getContext(), "Error: No se pudo encontrar el usuario para actualizar", Toast.LENGTH_LONG).show();
@@ -219,7 +211,7 @@ public class PerfilFragment extends Fragment {
         email.setEnabled(false);
         password.setEnabled(false);
 
-        // Restauramos el color del texto a un gris para indicar que no es editable (opcional)
+        // Restauramos el color del texto a un gris para indicar que no es editable
         int colorGris = getResources().getColor(android.R.color.darker_gray, null);
         nombre.setTextColor(colorGris);
         apellido.setTextColor(colorGris);
@@ -232,25 +224,21 @@ public class PerfilFragment extends Fragment {
         isPasswordVisible = !isPasswordVisible;
 
         if (isPasswordVisible) {
-            // --- MOSTRAR CONTRASEÑA ---
-            // 1. Cambiamos el InputType para que el texto sea visible.
-            //    Usamos TYPE_CLASS_TEXT | TYPE_TEXT_VARIATION_VISIBLE_PASSWORD.
+            //mostrar contraseña
             password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 
-            // 2. Cambiamos el icono al ojo "tachado" (visibility_off).
+            // cambiamos el icono al ojo "tachado"
             btnTogglePassword.setImageResource(R.drawable.ic_visibility_off);
 
         } else {
-            // --- OCULTAR CONTRASEÑA ---
-            // 1. Restauramos el InputType para que se muestre como contraseña (puntos).
+            // ocultar contraseña
+            // restaurar el input
             password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-            // 2. Cambiamos el icono de vuelta al ojo "normal" (visibility_on).
+            // cambiamos el icono de vuelta al ojo "normal"
             btnTogglePassword.setImageResource(R.drawable.ic_visibility_on);
         }
 
-        // MUY IMPORTANTE: Después de cambiar el InputType, debemos mover el cursor al final
-        // del texto para que el usuario no se desoriente.
         password.setSelection(password.getText().length());
     }
 

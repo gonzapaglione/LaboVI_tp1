@@ -34,9 +34,7 @@ public class InicioFragment extends Fragment {
 
         new Thread(() -> {
             // Esta parte se ejecuta fuera del hilo principal
-            final Usuario usuario = userDao.findByEmail(mailGuardado); // Necesitarás un metodo findByEmail en tu DAO
-
-            // Para actualizar la UI, debes volver al hilo principal
+            final Usuario usuario = userDao.findByEmail(mailGuardado);
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (usuario != null) {

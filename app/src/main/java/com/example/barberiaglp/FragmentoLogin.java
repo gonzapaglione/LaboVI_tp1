@@ -38,7 +38,6 @@ public class FragmentoLogin extends Fragment {
 
             usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
 
-            // Esto es útil para rellenar los campos si ya están guardados
             cargarPreferencias();
 
             btnLoginn.setOnClickListener(v -> verificarLogin());
@@ -86,13 +85,13 @@ public class FragmentoLogin extends Fragment {
             editor.putBoolean("isLoggedIn", true);
             editor.putString("userEmail", email);
 
-            // Si el checkbox está marcado, guardamos las credenciales
+            // Si el checkbox está marcado, guardamos los datos
             if (checkboxRemember.isChecked()) {
                 editor.putString("userEmail", email);
-                editor.putString("userPassword", password); // ¡Recuerda la advertencia de seguridad!
+                editor.putString("userPassword", password);
                 editor.putBoolean("rememberMe", true);
             } else {
-                // Si no está marcado, nos aseguramos de borrar cualquier credencial antigua
+                // Si no está marcado, nos aseguramos de borrar cualquier dato
                 editor.remove("userPassword");
                 editor.putBoolean("rememberMe", false);
             }

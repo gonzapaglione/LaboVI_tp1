@@ -18,7 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         chequearSesion();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_activity); // Asegúrate de que el nombre sea correcto
+        setContentView(R.layout.login_activity);
 
         btnLogin = findViewById(R.id.btnLoginTab);
         btnRegister = findViewById(R.id.btnRegistrar);

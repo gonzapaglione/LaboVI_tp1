@@ -94,8 +94,7 @@ public class FragmentoRegistrar extends Fragment {
             nuevo.fechaRegistro = dia + " de " + mesCapitalizado + ", " + anio;
 
         } else {
-            // Para versiones de Android más antiguas (API < 26)
-            // 1. Define el formato de salida deseado
+            // 1. Define el formato de salida
             SimpleDateFormat sdf = new SimpleDateFormat("d 'de' MMMM, yyyy", new Locale("es", "ES"));
             // 2. Formatea la fecha de hoy y la guarda
             nuevo.fechaRegistro = sdf.format(new java.util.Date());
