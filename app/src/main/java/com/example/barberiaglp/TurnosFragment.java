@@ -1,5 +1,6 @@
 package com.example.barberiaglp;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,6 +24,8 @@ import java.util.Locale;
 import BD.AppDatabase;
 import Daos.TurnoDao;
 import Modelos.Turno;
+import Modelos.TurnoConDetalles;
+import Repositorios.TurnosRepositorio;
 
 public class TurnosFragment extends Fragment {
 
@@ -33,6 +36,8 @@ public class TurnosFragment extends Fragment {
     private FloatingActionButton fabAgregar;
     private LinearLayout btnProximos, btnPasados;
     private TurnoDao turnoDao;
+
+    private TurnosRepositorio turnoRepo;
     private int usuarioActualId = -1;
 
     public TurnosFragment() {}
@@ -45,6 +50,8 @@ public class TurnosFragment extends Fragment {
 
         AppDatabase db = AppDatabase.getInstance(requireContext());
         turnoDao = db.turnoDao();
+        turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
+
 
         tvProximos = view.findViewById(R.id.tvProximos);
         tvPasados = view.findViewById(R.id.tvPasados);
@@ -96,24 +103,25 @@ public class TurnosFragment extends Fragment {
     private void cargarTurnosDeLaBD() {
         new Thread(() -> {
             // 1. Obtiene los turnos del usuario desde la BD (fuera del hilo principal)
-            List<Turno> todosLosTurnos = turnoDao.obtenerTurnosDeCliente(usuarioActualId);
+            List<TurnoConDetalles> todosLosTurnos = turnoRepo.getTurnosConDetalles(usuarioActualId);
+
 
             // 2. Prepara las listas para filtrar y la fecha actual para comparar
-            List<Turno> turnosProximos = new ArrayList<>();
-            List<Turno> turnosPasados = new ArrayList<>();
+            List<TurnoConDetalles> turnosProximos = new ArrayList<>();
+            List<TurnoConDetalles> turnosPasados = new ArrayList<>();
             Date fechaActual = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
             // 3. Filtra cada turno
-            for (Turno turno : todosLosTurnos) {
+            for (TurnoConDetalles turnodetalle : todosLosTurnos) {
                 try {
-                    java.util.Date fechaTurno = sdf.parse(turno.fecha);
+                    java.util.Date fechaTurno = sdf.parse(turnodetalle.turno.fecha);
 
                     // Comparamos la fecha del turno con la fecha actual.
                     if (fechaActual.before(fechaTurno) || sdf.format(fechaActual).equals(sdf.format(fechaTurno))) {
-                        turnosProximos.add(turno);
+                        turnosProximos.add(turnodetalle);
                     } else {
-                        turnosPasados.add(turno);
+                        turnosPasados.add(turnodetalle);
                     }
                 } catch (Exception e) {
                     // Manejo de error si el formato de la fecha en la BD es incorrecto

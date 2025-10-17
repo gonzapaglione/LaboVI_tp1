@@ -16,4 +16,7 @@ public interface ServicioDao {
     @Query("SELECT * FROM servicios")
     List<Servicio> obtenerTodos();
 
+    @Query("SELECT * FROM servicios WHERE id = :id")
+    Servicio findById(int id);
+
 }

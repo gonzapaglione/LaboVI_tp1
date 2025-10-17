@@ -14,14 +14,17 @@ import java.util.List;
 import java.util.Locale;
 
 import Modelos.Turno;
+import Modelos.TurnoConDetalles;
+import Repositorios.TurnosRepositorio;
 
 public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHolder> {
 
-    private final List<Turno> turnos;
+    private TurnosRepositorio turnoRepo;
+    private final List<TurnoConDetalles> turnos;
     private final SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private final SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
 
-    public TurnoAdapter(List<Turno> turnos) {
+    public TurnoAdapter(List<TurnoConDetalles> turnos) {
         this.turnos = turnos;
     }
 
@@ -35,10 +38,10 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
 
     @Override
     public void onBindViewHolder(@NonNull TurnoViewHolder holder, int position) {
-        Turno t = turnos.get(position);
+        TurnoConDetalles detalles = turnos.get(position);
         try {
             // 1. Usamos el 'parser' para convertir el String de la BD a un objeto Date
-            Date fechaDate = parser.parse(t.fecha);
+            Date fechaDate = parser.parse(detalles.turno.fecha);
 
             // 2. Usamos el 'formatter' para convertir el objeto Date al String que queremos
             String fechaFormateada = formatter.format(fechaDate);
@@ -51,11 +54,13 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
 
         } catch (Exception e) {
             // Si hay un error al parsear la fecha, mostramos la fecha original para no crashear la app
-            holder.tvFecha.setText(t.fecha);
+            holder.tvFecha.setText(detalles.turno.fecha);
             e.printStackTrace();
         }
-        holder.tvHora.setText(t.horaInicio);
-        holder.tvEstado.setText(t.estado);
+        holder.tvHora.setText(detalles.turno.horaInicio);
+        holder.tvEstado.setText(detalles.turno.estado);
+        holder.tvBarbero.setText(detalles.nombreBarbero);
+        holder.tvServicio.setText(detalles.nombreServicio);
     }
 
     @Override
@@ -64,17 +69,19 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
     }
 
     static class TurnoViewHolder extends RecyclerView.ViewHolder {
-        TextView tvFecha, tvHora, tvEstado;
+        TextView tvFecha, tvHora, tvEstado, tvBarbero, tvServicio;
 
         TurnoViewHolder(@NonNull View itemView) {
             super(itemView);
             tvFecha = itemView.findViewById(R.id.tvFecha);
             tvHora = itemView.findViewById(R.id.tvHora);
             tvEstado = itemView.findViewById(R.id.tvEstado);
+            tvBarbero = itemView.findViewById(R.id.tvBarber);
+            tvServicio = itemView.findViewById(R.id.tvNombreServicio);
         }
     }
 
-    public void actualizarTurnos(List<Turno> nuevosTurnos) {
+    public void actualizarTurnos(List<TurnoConDetalles> nuevosTurnos) {
         this.turnos.clear();
         this.turnos.addAll(nuevosTurnos);
         notifyDataSetChanged(); // Notifica al RecyclerView que los datos han cambiado y debe redibujarse.

@@ -35,4 +35,7 @@ public interface UsuarioDao {
 
     @Update
     void update(Usuario usuario);
+
+    @Query("SELECT * FROM usuarios WHERE id = :id")
+    Usuario findById(int id);
 }

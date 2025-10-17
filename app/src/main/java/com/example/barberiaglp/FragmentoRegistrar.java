@@ -103,23 +103,15 @@ public class FragmentoRegistrar extends Fragment {
         usuarioRepo.insert(nuevo);
         Toast.makeText(getContext(), "Usuario registrado correctamente: ", Toast.LENGTH_SHORT).show();
         limpiarInputs();
-        // Redirigir a MainActivity
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        getActivity().finish();
     }
 
 
     private void limpiarInputs() {
-
         //limpiar inputs
         etNombre.setText("");
         etEmail.setText("");
         etPassword.setText("");
         etApellido.setText("");
         etPassword2.setText("");
-
-
     }
 }
