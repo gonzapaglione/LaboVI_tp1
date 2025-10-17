@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import Repositorios.TurnosRepositorio;
 import Repositorios.UsuarioRepositorio;
 
 import androidx.appcompat.app.AlertDialog;
@@ -27,8 +28,9 @@ import androidx.appcompat.app.AlertDialog;
 public class PerfilFragment extends Fragment {
     public PerfilFragment(){}
 
-    Button logOut, btnBorrarTodo;
+    Button logOut, btnBorrarTodo, btnBorrarTurnos;
     private UsuarioRepositorio usuarioRepo;
+    private TurnosRepositorio turnoRepo;
     TextView fechadesde, editar;
     EditText nombre, apellido, email, password;
 
@@ -63,6 +65,14 @@ public class PerfilFragment extends Fragment {
             usuarioRepo.deleteAllUsers();
             Toast.makeText(getContext(), "¡Tabla de usuarios borrada!", Toast.LENGTH_SHORT).show();
             cerrarsesion();
+        });
+
+        turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
+        //temporal para las pruebas con la base de datos para eliminar tdos los turnos
+        btnBorrarTurnos = view.findViewById(R.id.btnBorrarTurnos);
+        btnBorrarTurnos.setOnClickListener(v -> {
+            turnoRepo.deleteAllTurnos();
+            Toast.makeText(getContext(), "¡Turnos borrados!", Toast.LENGTH_SHORT).show();
         });
 
         // 4. Llama al nuevo metodo para cargar los datos

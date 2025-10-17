@@ -5,6 +5,7 @@ import java.util.List;
 
 import Modelos.BarberoServicios;
 import Modelos.Servicio;
+import Modelos.Turno;
 import Modelos.Usuario;
 
 public class DataSeeder {
@@ -12,6 +13,42 @@ public class DataSeeder {
     public static void cargarDatos(Context context){
         cargarServiciosPredeterminados(context);
         cargarBarberosPredeterminados(context);
+        cargarTurnosPredetermiandos(context);
+    }
+
+    private static void cargarTurnosPredetermiandos(Context context) {
+        AppDatabase db = AppDatabase.getInstance(context);
+        List<Turno> turnosExistentes = db.turnoDao().obtenerTodos();
+
+        if (turnosExistentes.isEmpty()) {
+            Turno turno1 = new Turno();
+            turno1.fecha = "2025-10-19";
+            turno1.horaInicio = "10:00";
+            turno1.servicioId = 1;
+            turno1.barberoId = 6;
+            turno1.clienteId = 4;
+            turno1.estado = "Pendiente";
+
+            Turno turno2 = new Turno();
+            turno2.fecha = "2025-10-28";
+            turno2.horaInicio = "10:00";
+            turno2.servicioId = 1;
+            turno2.barberoId = 6;
+            turno2.clienteId = 4;
+            turno2.estado = "Pendiente";
+
+            Turno turno3 = new Turno();
+            turno3.fecha = "2025-09-13";
+            turno3.horaInicio = "10:00";
+            turno3.servicioId = 1;
+            turno3.barberoId = 6;
+            turno3.clienteId = 4;
+            turno3.estado = "Atendido";
+
+            db.turnoDao().insertar(turno1);
+            db.turnoDao().insertar(turno2);
+            db.turnoDao().insertar(turno3);
+        }
     }
 
     public static void cargarServiciosPredeterminados(Context context) {

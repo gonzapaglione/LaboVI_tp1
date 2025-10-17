@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:background="#230F10"
     tools:context=".FragmentoRegistrar">
@@ -119,6 +120,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/botones"
+            app:backgroundTint="#8B0000"
             android:text="@string/registrarme"
             android:textAllCaps="false"
             android:textSize="16sp"

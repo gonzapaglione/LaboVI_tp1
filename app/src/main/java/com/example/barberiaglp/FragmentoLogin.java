@@ -61,7 +61,7 @@ public class FragmentoLogin extends Fragment {
                     if (usuario != null) {
                         Toast.makeText(getContext(), "Bienvenida " + usuario.nombre, Toast.LENGTH_SHORT).show();
 
-                        guardarPreferencias(usuario.email, passwordIngresada);
+                        guardarPreferencias(usuario.email, passwordIngresada, usuario.id);
 
                         // Redirigir a MainActivity
                         Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -77,13 +77,14 @@ public class FragmentoLogin extends Fragment {
             });
         }
 
-        private void guardarPreferencias(String email, String password) {
+        private void guardarPreferencias(String email, String password, int id) {
             SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
 
             // Siempre guardamos que la sesión está iniciada
             editor.putBoolean("isLoggedIn", true);
             editor.putString("userEmail", email);
+            editor.putInt("userId", id);
 
             // Si el checkbox está marcado, guardamos los datos
             if (checkboxRemember.isChecked()) {

@@ -1,5 +1,7 @@
 package com.example.barberiaglp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,18 +9,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
+import java.util.Locale;
+import BD.AppDatabase;
+import Daos.TurnoDao;
 import Modelos.Turno;
 
 public class TurnosFragment extends Fragment {
@@ -29,6 +32,8 @@ public class TurnosFragment extends Fragment {
     private TurnoAdapter adapterProximos, adapterPasados;
     private FloatingActionButton fabAgregar;
     private LinearLayout btnProximos, btnPasados;
+    private TurnoDao turnoDao;
+    private int usuarioActualId = -1;
 
     public TurnosFragment() {}
 
@@ -38,8 +43,12 @@ public class TurnosFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_turnos, container, false);
 
+        AppDatabase db = AppDatabase.getInstance(requireContext());
+        turnoDao = db.turnoDao();
+
         tvProximos = view.findViewById(R.id.tvProximos);
         tvPasados = view.findViewById(R.id.tvPasados);
+
         lineaProximos = view.findViewById(R.id.lineaProximos);
         lineaPasados = view.findViewById(R.id.lineaPasados);
         rvProximos = view.findViewById(R.id.rvTurnosProximos);
@@ -51,19 +60,14 @@ public class TurnosFragment extends Fragment {
         rvProximos.setLayoutManager(new LinearLayoutManager(getContext()));
         rvPasados.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Datos de prueba
-        List<Turno> proximos = new ArrayList<>();
-        proximos.add(crearTurnoEjemplo("2025-10-20", "10:00", "pendiente"));
-        proximos.add(crearTurnoEjemplo("2025-10-22", "12:00", "pendiente"));
-
-        List<Turno> pasados = new ArrayList<>();
-        pasados.add(crearTurnoEjemplo("2025-10-01", "09:00", "atendido"));
-
-        adapterProximos = new TurnoAdapter(proximos);
-        adapterPasados = new TurnoAdapter(pasados);
+        //se crean adaptadpres con listas vacías
+        adapterProximos = new TurnoAdapter(new ArrayList<>());
+        adapterPasados = new TurnoAdapter(new ArrayList<>());
 
         rvProximos.setAdapter(adapterProximos);
         rvPasados.setAdapter(adapterPasados);
+
+        obtenerIdUsuarioYcargarTurnos();
 
         // Cambios entre secciones
         btnProximos.setOnClickListener(v -> mostrarProximos());
@@ -77,13 +81,56 @@ public class TurnosFragment extends Fragment {
         return view;
     }
 
-    private Turno crearTurnoEjemplo(String fecha, String hora, String estado) {
-        Turno t = new Turno();
-        t.fecha = fecha;
-        t.horaInicio = hora;
-        t.estado = estado;
-        return t;
+    private void obtenerIdUsuarioYcargarTurnos() {
+        SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        usuarioActualId = preferences.getInt("userId", -1);
+
+        if (usuarioActualId != -1) {
+            cargarTurnosDeLaBD();
+        } else {
+            Toast.makeText(getContext(), "Error: No se pudo identificar al usuario.", Toast.LENGTH_LONG).show();
+
+        }
     }
+
+    private void cargarTurnosDeLaBD() {
+        new Thread(() -> {
+            // 1. Obtiene los turnos del usuario desde la BD (fuera del hilo principal)
+            List<Turno> todosLosTurnos = turnoDao.obtenerTurnosDeCliente(usuarioActualId);
+
+            // 2. Prepara las listas para filtrar y la fecha actual para comparar
+            List<Turno> turnosProximos = new ArrayList<>();
+            List<Turno> turnosPasados = new ArrayList<>();
+            Date fechaActual = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+            // 3. Filtra cada turno
+            for (Turno turno : todosLosTurnos) {
+                try {
+                    java.util.Date fechaTurno = sdf.parse(turno.fecha);
+
+                    // Comparamos la fecha del turno con la fecha actual.
+                    if (fechaActual.before(fechaTurno) || sdf.format(fechaActual).equals(sdf.format(fechaTurno))) {
+                        turnosProximos.add(turno);
+                    } else {
+                        turnosPasados.add(turno);
+                    }
+                } catch (Exception e) {
+                    // Manejo de error si el formato de la fecha en la BD es incorrecto
+                    e.printStackTrace();
+                }
+            }
+
+            // 4. Actualiza los adaptadores en el hilo principal
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    adapterProximos.actualizarTurnos(turnosProximos);
+                    adapterPasados.actualizarTurnos(turnosPasados);
+                });
+            }
+        }).start();
+    }
+
 
     private void mostrarProximos() {
         rvProximos.setVisibility(View.VISIBLE);

@@ -1,6 +1,7 @@
 package com.example.barberiaglp;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -100,7 +101,17 @@ public class FragmentoRegistrar extends Fragment {
             nuevo.fechaRegistro = sdf.format(new java.util.Date());
         }
         usuarioRepo.insert(nuevo);
-        Toast.makeText(getContext(), "Usuario registrado correctamente: "+ nuevo.fechaRegistro, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Usuario registrado correctamente: ", Toast.LENGTH_SHORT).show();
+        limpiarInputs();
+        // Redirigir a MainActivity
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+
+    private void limpiarInputs() {
 
         //limpiar inputs
         etNombre.setText("");

@@ -8,13 +8,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import Modelos.Turno;
 
 public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHolder> {
 
     private final List<Turno> turnos;
+    private final SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    private final SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
 
     public TurnoAdapter(List<Turno> turnos) {
         this.turnos = turnos;
@@ -31,7 +36,24 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
     @Override
     public void onBindViewHolder(@NonNull TurnoViewHolder holder, int position) {
         Turno t = turnos.get(position);
-        holder.tvFecha.setText(t.fecha);
+        try {
+            // 1. Usamos el 'parser' para convertir el String de la BD a un objeto Date
+            Date fechaDate = parser.parse(t.fecha);
+
+            // 2. Usamos el 'formatter' para convertir el objeto Date al String que queremos
+            String fechaFormateada = formatter.format(fechaDate);
+
+            // 3. Hacemos la primera letra mayúscula para un mejor estilo (ej. "domingo" -> "Domingo")
+            String fechaFinal = fechaFormateada.substring(0, 1).toUpperCase() + fechaFormateada.substring(1);
+
+            // 4. Asignamos la fecha final al TextView
+            holder.tvFecha.setText(fechaFinal);
+
+        } catch (Exception e) {
+            // Si hay un error al parsear la fecha, mostramos la fecha original para no crashear la app
+            holder.tvFecha.setText(t.fecha);
+            e.printStackTrace();
+        }
         holder.tvHora.setText(t.horaInicio);
         holder.tvEstado.setText(t.estado);
     }
@@ -50,5 +72,11 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
             tvHora = itemView.findViewById(R.id.tvHora);
             tvEstado = itemView.findViewById(R.id.tvEstado);
         }
+    }
+
+    public void actualizarTurnos(List<Turno> nuevosTurnos) {
+        this.turnos.clear();
+        this.turnos.addAll(nuevosTurnos);
+        notifyDataSetChanged(); // Notifica al RecyclerView que los datos han cambiado y debe redibujarse.
     }
 }
