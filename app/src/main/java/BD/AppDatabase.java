@@ -12,12 +12,14 @@ import Daos.HorarioDao;
 import Daos.ServicioDao;
 import Daos.TurnoDao;
 import Daos.UsuarioDao;
+import Modelos.BarberoServicios;
+import Daos.BarberoServicioDao;
 import Modelos.Horario;
 import Modelos.Servicio;
 import Modelos.Turno;
 import Modelos.Usuario;
 
-@Database(entities = {Usuario.class, Servicio.class, Turno.class, Horario.class}, version = 3)
+@Database(entities = {Usuario.class, Servicio.class, Turno.class, Horario.class, BarberoServicios.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instancia;
@@ -29,6 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ServicioDao servicioDao();
     public abstract TurnoDao turnoDao();
     public abstract HorarioDao horarioDao();
+    public abstract BarberoServicioDao BarberoServicioDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instancia == null) {
