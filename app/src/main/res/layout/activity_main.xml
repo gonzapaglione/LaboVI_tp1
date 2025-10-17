@@ -49,7 +49,7 @@
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/ic_home"
-                android:tint="#BDBDBD" />
+                app:tint="#BDBDBD" />
 
             <TextView
                 android:id="@+id/NavInicio"
@@ -78,7 +78,7 @@
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/ic_calendar"
-                android:tint="#BDBDBD" />
+                app:tint="#BDBDBD" />
 
             <TextView
                 android:id="@+id/NavMisTurnos"
@@ -107,7 +107,7 @@
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/ic_scissors"
-                android:tint="#BDBDBD" />
+                app:tint="#BDBDBD" />
 
             <TextView
                 android:id="@+id/NavServicios"
@@ -136,7 +136,7 @@
                 android:layout_width="26dp"
                 android:layout_height="26dp"
                 android:src="@drawable/ic_account"
-                android:tint="#BDBDBD" />
+                app:tint="#BDBDBD" />
 
             <TextView
                 android:id="@+id/NavPerfil"
