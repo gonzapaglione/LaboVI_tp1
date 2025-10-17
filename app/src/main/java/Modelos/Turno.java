@@ -25,4 +25,67 @@ public class Turno {
     public String horaFin;    // Calculada según duración del servicio
     public String estado;     // "pendiente", "atendido", "cancelado"
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
+    }
+
+    public int getBarberoId() {
+        return barberoId;
+    }
+
+    public void setBarberoId(int barberoId) {
+        this.barberoId = barberoId;
+    }
+
+    public int getServicioId() {
+        return servicioId;
+    }
+
+    public void setServicioId(int servicioId) {
+        this.servicioId = servicioId;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getHoraInicio() {
+        return horaInicio;
+    }
+
+    public void setHoraInicio(String horaInicio) {
+        this.horaInicio = horaInicio;
+    }
+
+    public String getHoraFin() {
+        return horaFin;
+    }
+
+    public void setHoraFin(String horaFin) {
+        this.horaFin = horaFin;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }
