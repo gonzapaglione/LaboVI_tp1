@@ -1,6 +1,7 @@
 package Repositorios;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BD.AppDatabase;
+import BD.DataSeeder;
 import Daos.ServicioDao;
 import Daos.TurnoDao;
 import Daos.UsuarioDao;
@@ -68,5 +70,14 @@ public class TurnosRepositorio {
 
         return turnosEnriquecidos;
     }
+
+
+    public void cargarTurnosPredeterminados() {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            DataSeeder.cargarTurnosPredetermiandos(application);
+        });
+        Toast.makeText(application, "¡Turnos cargados!", Toast.LENGTH_SHORT).show();
+    }
+
 
 }

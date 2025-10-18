@@ -28,7 +28,7 @@ import androidx.appcompat.app.AlertDialog;
 public class PerfilFragment extends Fragment {
     public PerfilFragment(){}
 
-    Button logOut, btnBorrarTodo, btnBorrarTurnos;
+    Button logOut, btnBorrarTodo, btnBorrarTurnos, btnCargarTurnos, btnBorrarSharedP;
     private UsuarioRepositorio usuarioRepo;
     private TurnosRepositorio turnoRepo;
     TextView fechadesde, editar;
@@ -73,6 +73,24 @@ public class PerfilFragment extends Fragment {
         btnBorrarTurnos.setOnClickListener(v -> {
             turnoRepo.deleteAllTurnos();
             Toast.makeText(getContext(), "¡Turnos borrados!", Toast.LENGTH_SHORT).show();
+        });
+
+        //botón para cargar turnos predeterminados
+        btnCargarTurnos = view.findViewById(R.id.btnCargarTurnos);
+        btnCargarTurnos.setOnClickListener(v -> {
+            turnoRepo.cargarTurnosPredeterminados();
+            Toast.makeText(getContext(), "¡Turnos cargados!", Toast.LENGTH_SHORT).show();
+        });
+
+        //boton para eliminar toodo de shared preferences
+        btnBorrarSharedP = view.findViewById(R.id.btnBorrarSharedP);
+        btnBorrarSharedP.setOnClickListener(v -> {
+           SharedPreferences preferences = requireActivity()
+                   .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+           SharedPreferences.Editor editor = preferences.edit();
+           editor.clear();
+           editor.apply();
+           Toast.makeText(getContext(), "¡Shared preferences borrados!", Toast.LENGTH_SHORT).show();
         });
 
         // 4. Llama al nuevo metodo para cargar los datos

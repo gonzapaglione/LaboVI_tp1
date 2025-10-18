@@ -404,10 +404,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp" />
         <Button
+            android:id="@+id/btnCargarTurnos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CARGAR TURNOS (TEST)"
+            app:backgroundTint="@android:color/holo_red_dark"
+            app:layout_constraintTop_toBottomOf="@id/btnLogOut"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+        <Button
             android:id="@+id/btnBorrarTurnos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="BORRAR TODOS LOS TURNOS (TEST)"
+            app:backgroundTint="@android:color/holo_red_dark"
+            app:layout_constraintTop_toBottomOf="@id/btnLogOut"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
+        <Button
+            android:id="@+id/btnBorrarSharedP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BORRAR SHARED PREFERENCES (TEST)"
             app:backgroundTint="@android:color/holo_red_dark"
             app:layout_constraintTop_toBottomOf="@id/btnLogOut"
             app:layout_constraintStart_toStartOf="parent"

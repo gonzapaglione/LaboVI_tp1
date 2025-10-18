@@ -10,5 +10,7 @@
     <color name="red_4">#9A2424</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#838383</color>
+    <color name="green">#009929</color>
+    <color name="blue">#2898EE</color>
 
 </resources>

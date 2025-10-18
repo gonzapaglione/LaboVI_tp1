@@ -34,9 +34,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void chequearSesion() {
         SharedPreferences preferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        // Lee el valor booleano de "isLoggedIn". Si no existe, devuelve 'false' por defecto.
-        boolean recordar = preferences.getBoolean("rememberMe", false);
-        if(recordar){
+        if (preferences.getAll().isEmpty()) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isLoggedIn", false);
+            editor.apply();
+        }
+        boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
+        if(isLoggedIn){
             Intent intent = new Intent(LoginActivity.this,MainActivity.class );
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

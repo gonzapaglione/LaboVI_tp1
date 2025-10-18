@@ -59,8 +59,21 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
         }
         holder.tvHora.setText(detalles.turno.horaInicio);
         holder.tvEstado.setText(detalles.turno.estado);
+        obtenerEstiloEstado(detalles, holder);
         holder.tvBarbero.setText(detalles.nombreBarbero);
         holder.tvServicio.setText(detalles.nombreServicio);
+    }
+
+    private void obtenerEstiloEstado(TurnoConDetalles detalle, TurnoViewHolder holder) {
+        holder.tvEstado.setPadding(16, 8, 16, 8); //para que esté bien el texto
+
+        if ("Pendiente".equals(detalle.turno.estado)) {
+            holder.tvEstado.setBackgroundResource(R.drawable.estado_pendiente_background);
+        } else if ("Atendido".equals(detalle.turno.estado)) {
+            holder.tvEstado.setBackgroundResource(R.drawable.estado_atendido_background);
+        } else {
+            holder.tvEstado.setBackgroundResource(R.drawable.estado_cancelado_background);
+        }
     }
 
     @Override

@@ -71,7 +71,7 @@ public class FragmentoLogin extends Fragment {
 
                     } else {
                         // Login Fallido
-                        Toast.makeText(getContext(), "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "No existe ningún usuario registrado con esos datos, crear una cuenta para poder ingresar", Toast.LENGTH_SHORT).show();
                     }
                 });
             });
