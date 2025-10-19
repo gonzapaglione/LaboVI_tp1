@@ -290,22 +290,24 @@
                             android:src="@drawable/ic_scissors"
                             android:scaleType="fitXY"
                             app:tint="#760106" />
+
                         <TextView
+                            android:id="@+id/cantidadCortePelo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="-"
                             android:textColor="#FFFFFF"
                             android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="4dp"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="3"
-                            />
+                            android:textStyle="bold" />
+
                         <TextView
-                            android:textColor="#838383"
-                            android:textSize="11sp"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/descripcionCortePelo"
                             android:layout_width="wrap_content"
-                            android:text="Recorte barba"
-                            />
+                            android:layout_height="wrap_content"
+                            android:text="Corte de cabello"
+                            android:textColor="#838383"
+                            android:textSize="11sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -328,21 +330,22 @@
                             android:scaleType="fitXY" app:tint="#760106" />
 
                         <TextView
+                            android:id="@+id/cantidadCorteBarba"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="-"
                             android:textColor="#FFFFFF"
                             android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="4dp"
-                            android:layout_height="wrap_content"
-                            android:layout_width="wrap_content"
-                            android:text="3"
-                            />
+                            android:textStyle="bold" />
+
                         <TextView
-                            android:textColor="#838383"
-                            android:textSize="11sp"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/descripcionCorteBarba"
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Recorte barba"
-                            />
+                            android:textColor="#838383"
+                            android:textSize="11sp" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -362,22 +365,24 @@
                         android:src="@drawable/ic_chair"
                         android:scaleType="fitXY"
                         app:tint="#760106" />
+
                     <TextView
+                        android:id="@+id/cantidadCortePeloYBarba"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="-"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="7"
-                        />
+                        android:textStyle="bold" />
+
                     <TextView
-                        android:textColor="#838383"
-                        android:textSize="11sp"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/descripcionCortePeloYBarba"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Combos corte y barba"
-                        />
+                        android:textColor="#838383"
+                        android:textSize="11sp" />
                 </LinearLayout>
                 <Button
                     android:id="@+id/btnLogOut"

@@ -20,10 +20,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import BD.AppDatabase;
+import Modelos.Turno;
+import Modelos.TurnoConDetalles;
 import Repositorios.TurnosRepositorio;
 import Repositorios.UsuarioRepositorio;
 
 import androidx.appcompat.app.AlertDialog;
+
+import java.util.List;
 
 public class PerfilFragment extends Fragment {
     public PerfilFragment(){}
@@ -31,8 +36,10 @@ public class PerfilFragment extends Fragment {
     Button logOut, btnBorrarTodo, btnBorrarTurnos, btnCargarTurnos, btnBorrarSharedP;
     private UsuarioRepositorio usuarioRepo;
     private TurnosRepositorio turnoRepo;
-    TextView fechadesde, editar;
+    TextView fechadesde, editar, cantidadCortesPelo, cantidadCortesBarba, cantidadCortesPeloYBarba;
     EditText nombre, apellido, email, password;
+    private int usuarioActualId;
+    private AppDatabase db;
 
     ImageButton btnTogglePassword;
     private boolean isPasswordVisible = false;
@@ -42,6 +49,10 @@ public class PerfilFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
         logOut = view.findViewById(R.id.btnLogOut);
+        SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        usuarioActualId = preferences.getInt("userId", -1);
+        usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
+        turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
 
         logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
         fechadesde = view.findViewById(R.id.fechaClienteDesde);
@@ -50,6 +61,9 @@ public class PerfilFragment extends Fragment {
         email = view.findViewById(R.id.inputMail);
         password = view.findViewById(R.id.etPassword);
         editar = view.findViewById(R.id.editarDatosPerfil);
+        cantidadCortesPelo = view.findViewById(R.id.cantidadCortePelo);
+        cantidadCortesBarba = view.findViewById(R.id.cantidadCorteBarba);
+        cantidadCortesPeloYBarba = view.findViewById(R.id.cantidadCortePeloYBarba);
 
         editar.setOnClickListener(v -> activarEdicion(v));
         btnTogglePassword = view.findViewById(R.id.btnTogglePassword);
@@ -58,7 +72,7 @@ public class PerfilFragment extends Fragment {
             togglePasswordVisibility();
         });
 
-        usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
+
         //temporal para las pruebas con la base de datos para eliminar tdos los usuarios
         btnBorrarTodo = view.findViewById(R.id.btnBorrarTodo);
         btnBorrarTodo.setOnClickListener(v -> {
@@ -67,7 +81,7 @@ public class PerfilFragment extends Fragment {
             cerrarsesion();
         });
 
-        turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
+
         //temporal para las pruebas con la base de datos para eliminar tdos los turnos
         btnBorrarTurnos = view.findViewById(R.id.btnBorrarTurnos);
         btnBorrarTurnos.setOnClickListener(v -> {
@@ -85,9 +99,9 @@ public class PerfilFragment extends Fragment {
         //boton para eliminar toodo de shared preferences
         btnBorrarSharedP = view.findViewById(R.id.btnBorrarSharedP);
         btnBorrarSharedP.setOnClickListener(v -> {
-           SharedPreferences preferences = requireActivity()
+           SharedPreferences preferencess = requireActivity()
                    .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-           SharedPreferences.Editor editor = preferences.edit();
+           SharedPreferences.Editor editor = preferencess.edit();
            editor.clear();
            editor.apply();
            Toast.makeText(getContext(), "¡Shared preferences borrados!", Toast.LENGTH_SHORT).show();
@@ -95,12 +109,49 @@ public class PerfilFragment extends Fragment {
 
         // 4. Llama al nuevo metodo para cargar los datos
         colocarDatosUsuario();
+        cargarHistorialServicios();
+
 
         // 3 Le asignás el listener
         logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
 
         return view;
     }
+
+    // En PerfilFragment.java
+
+    public void cargarHistorialServicios() {
+        // Ejecuta la lógica en un hilo secundario para no bloquear la UI.
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            List<Turno> turnosAtendidos = turnoRepo.getTurnosAtendidos(usuarioActualId);
+
+            int cantidadCP = 0, cantidadCB = 0, cantidadCPYB = 0;
+
+            if (!turnosAtendidos.isEmpty()) {
+                for (Turno turno : turnosAtendidos) {
+                    if (turno.servicioId == 1) {
+                        cantidadCP++;
+                    } else if (turno.servicioId == 2) {
+                        cantidadCB++;
+                    } else if (turno.servicioId == 3) {
+                        cantidadCPYB++;
+                    }
+                }
+            }
+
+            // 3. Volvemos al hilo principal para actualizar los TextViews.
+            int finalCantidadCP = cantidadCP;
+            int finalCantidadCB = cantidadCB;
+            int finalCantidadCPYB = cantidadCPYB;
+
+            cantidadCortesPelo.setText(String.valueOf(finalCantidadCP));
+            cantidadCortesBarba.setText(String.valueOf(finalCantidadCB));
+            cantidadCortesPeloYBarba.setText(String.valueOf(finalCantidadCPYB));
+
+
+        });
+    }
+
 
     public void mostrarDialogoCerrarSesion() {
         // Crear un título con color blanco
@@ -228,6 +279,8 @@ public class PerfilFragment extends Fragment {
             }
         });
     }
+
+
 
     private void restaurarEstadoVisual() {
         // Cambiamos el texto del botón de vuelta a "Editar"

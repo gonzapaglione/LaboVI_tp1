@@ -72,6 +72,13 @@ public class TurnosRepositorio {
     }
 
 
+    public List<Turno> getTurnosAtendidos(int clienteId) {
+        // 1. Usamos el nuevo métoodo del DAO para obtener solo los turnos atendidos.
+        List<Turno> turnosAtendidos = turnoDao.getTurnosAtendidosPorCliente(clienteId);
+        return turnosAtendidos;
+    }
+
+
     public void cargarTurnosPredeterminados() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             DataSeeder.cargarTurnosPredetermiandos(application);

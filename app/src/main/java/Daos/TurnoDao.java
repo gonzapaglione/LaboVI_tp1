@@ -22,6 +22,9 @@ public interface TurnoDao {
     @Query("SELECT * FROM turnos WHERE clienteId = :clienteId ORDER BY fecha DESC, horaInicio DESC")
     List<Turno> obtenerTurnosDeCliente(int clienteId);
 
+    @Query("SELECT * FROM turnos WHERE clienteId = :clienteId AND estado = 'Atendido'")
+    List<Turno> getTurnosAtendidosPorCliente(int clienteId);
+
     @Query("SELECT * FROM turnos WHERE barberoId = :barberoId")
     List<Turno> obtenerTurnosDeBarbero(int barberoId);
 
