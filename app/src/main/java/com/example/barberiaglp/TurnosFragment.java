@@ -40,18 +40,18 @@ public class TurnosFragment extends Fragment {
     private TurnosRepositorio turnoRepo;
     private int usuarioActualId = -1;
 
-    public TurnosFragment() {}
+    public TurnosFragment() {
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_turnos, container, false);
 
         AppDatabase db = AppDatabase.getInstance(requireContext());
         turnoDao = db.turnoDao();
         turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
-
 
         tvProximos = view.findViewById(R.id.tvProximos);
         tvPasados = view.findViewById(R.id.tvPasados);
@@ -67,7 +67,7 @@ public class TurnosFragment extends Fragment {
         rvProximos.setLayoutManager(new LinearLayoutManager(getContext()));
         rvPasados.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //se crean adaptadpres con listas vacías
+        // se crean adaptadpres con listas vacías
         adapterProximos = new TurnoAdapter(new ArrayList<>());
         adapterPasados = new TurnoAdapter(new ArrayList<>());
 
@@ -80,10 +80,12 @@ public class TurnosFragment extends Fragment {
         btnProximos.setOnClickListener(v -> mostrarProximos());
         btnPasados.setOnClickListener(v -> mostrarPasados());
 
-        // Acción del botón flotante
-        fabAgregar.setOnClickListener(v ->
-                Toast.makeText(getContext(), "Agregar nuevo turno", Toast.LENGTH_SHORT).show()
-        );
+        // Acción del botón flotante: abrir ReservasActivity
+        fabAgregar.setOnClickListener(v -> {
+            // iniciar la activity de reservas
+            startActivity(new android.content.Intent(requireContext(),
+                    com.example.barberiaglp.reservaTurno.ReservasActivity.class));
+        });
 
         return view;
     }
@@ -104,7 +106,6 @@ public class TurnosFragment extends Fragment {
         new Thread(() -> {
             // 1. Obtiene los turnos del usuario desde la BD (fuera del hilo principal)
             List<TurnoConDetalles> todosLosTurnos = turnoRepo.getTurnosConDetalles(usuarioActualId);
-
 
             // 2. Prepara las listas para filtrar y la fecha actual para comparar
             List<TurnoConDetalles> turnosProximos = new ArrayList<>();
@@ -138,7 +139,6 @@ public class TurnosFragment extends Fragment {
             }
         }).start();
     }
-
 
     private void mostrarProximos() {
         rvProximos.setVisibility(View.VISIBLE);
