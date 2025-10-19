@@ -24,6 +24,7 @@
     <string name="cerrarSesion">Cerrar sesión</string>
     <string name="Salir">Salir</string>
     <string name="crear_cuenta">Crear Cuenta</string>
+    <string name="continuar">Continuar</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
