@@ -138,8 +138,8 @@ public class TurnosFragment extends Fragment {
     }
 
     private void cambiarEstado(TurnoConDetalles turnodetalle) {
-        if(turnodetalle.turno.estado.equals("Pendiente")){
-            turnodetalle.turno.estado = "Atendido";
+        if(turnodetalle.turno.getEstado().equals("Pendiente")){
+            turnodetalle.turno.setEstado("Antendido");
         }
         turnoRepo.update(turnodetalle.turno);
     }

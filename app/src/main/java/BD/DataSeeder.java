@@ -45,6 +45,7 @@ public class DataSeeder {
             turno3.clienteId = 1;
             turno3.estado = "Cancelado";
 
+
             Turno turno4 = new Turno();
             turno4.fecha = "2025-08-03";
             turno4.horaInicio = "20:00";
@@ -55,6 +56,7 @@ public class DataSeeder {
 
             db.turnoDao().insertar(turno1);
             db.turnoDao().insertar(turno2);
+            db.turnoDao().insertar(turno3);
             db.turnoDao().insertar(turno4);
 
     }
