@@ -28,7 +28,8 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
     private final List<TurnoConDetalles> turnos;
 
     private final SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-    private final SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
+    private final SimpleDateFormat formatter = new SimpleDateFormat("EEEE, dd 'de' MMMM 'de' yyyy",
+            new Locale("es", "ES"));
 
     public TurnoAdapter(List<TurnoConDetalles> turnos, TurnosRepositorio turnoRepo) {
         this.turnos = turnos;
@@ -71,15 +72,60 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
             Calendar limite = Calendar.getInstance();
             limite.add(Calendar.HOUR_OF_DAY, 4); // límite para cancelar: 4h antes
 
-            if (turnoDate.before(limite.getTime()) || detalles.turno.estado.equals("cancelado")) {
+            String estado = detalles.turno.estado == null ? "" : detalles.turno.estado.trim();
+
+            if (turnoDate.before(limite.getTime()) || estado.equalsIgnoreCase("cancelado")) {
                 holder.btnCancelarTurno.setEnabled(false);
                 holder.btnCancelarTurno.setAlpha(0.5f); // visualmente deshabilitado
+                // quitar listener para evitar que se pueda apretar
+                holder.btnCancelarTurno.setOnClickListener(null);
             } else {
                 holder.btnCancelarTurno.setEnabled(true);
                 holder.btnCancelarTurno.setAlpha(1f);
 
                 holder.btnCancelarTurno.setOnClickListener(v -> {
-                    cancelarTurno(detalles.turno);
+                    // Mostrar confirmación antes de cancelar
+                    android.content.Context ctx = v.getContext();
+
+                    // Título en blanco
+                    android.text.SpannableString title = new android.text.SpannableString("Confirmar cancelación");
+                    title.setSpan(new android.text.style.ForegroundColorSpan(
+                            androidx.core.content.ContextCompat.getColor(ctx, R.color.white)), 0, title.length(), 0);
+
+                    android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(ctx)
+                            .setTitle(title)
+                            .setMessage("¿Seguro que desea cancelar este turno?")
+                            .setPositiveButton("Sí", (d, which) -> {
+                                // Ejecutar la cancelación en background y actualizar UI cuando termine
+                                cancelarTurno(detalles.turno);
+                                // actualizar estado localmente y notificar cambio para refrescar la vista
+                                detalles.turno.estado = "Cancelado";
+                                // notificar en el hilo principal
+                                android.os.Handler mainHandler = new android.os.Handler(
+                                        android.os.Looper.getMainLooper());
+                                mainHandler.post(() -> notifyItemChanged(position));
+                            })
+                            .setNegativeButton("No", (d, which) -> d.dismiss())
+                            .show();
+
+                    // Aplicar fondo rojo y colores blancos a botones y mensaje
+                    if (dialog.getWindow() != null) {
+                        dialog.getWindow().setBackgroundDrawable(
+                                new android.graphics.drawable.ColorDrawable(
+                                        androidx.core.content.ContextCompat.getColor(ctx, R.color.red_3)));
+                    }
+
+                    android.widget.Button positive = dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    android.widget.Button negative = dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                    int white = androidx.core.content.ContextCompat.getColor(ctx, R.color.white);
+                    if (positive != null)
+                        positive.setTextColor(white);
+                    if (negative != null)
+                        negative.setTextColor(white);
+
+                    android.widget.TextView message = dialog.findViewById(android.R.id.message);
+                    if (message != null)
+                        message.setTextColor(white);
                 });
             }
         } catch (ParseException e) {
@@ -89,13 +135,15 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
             holder.btnCancelarTurno.setAlpha(0.5f);
         }
     }
+
     public void cancelarTurno(Turno turno) {
         Calendar limite = Calendar.getInstance();
         limite.add(Calendar.HOUR_OF_DAY, 4);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         try {
             Date turnoDate = sdf.parse(turno.fecha + " " + turno.horaInicio);
-            if (turnoDate.before(limite.getTime())) return; // no se puede cancelar
+            if (turnoDate.before(limite.getTime()))
+                return; // no se puede cancelar
             turno.estado = "Cancelado";
             AppDatabase.databaseWriteExecutor.execute(() -> turnoRepo.update(turno));
         } catch (Exception e) {
@@ -103,11 +151,8 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
         }
     }
 
-
-
-
     private void obtenerEstiloEstado(TurnoConDetalles detalle, TurnoViewHolder holder) {
-        holder.tvEstado.setPadding(16, 8, 16, 8); //para que esté bien el texto
+        holder.tvEstado.setPadding(16, 8, 16, 8); // para que esté bien el texto
 
         if ("Pendiente".equals(detalle.turno.estado)) {
             holder.tvEstado.setBackgroundResource(R.drawable.estado_pendiente_background);
@@ -127,7 +172,6 @@ public class TurnoAdapter extends RecyclerView.Adapter<TurnoAdapter.TurnoViewHol
         TextView tvFecha, tvHora, tvEstado, tvBarbero, tvServicio;
         Button btnCancelarTurno;
         private TurnosRepositorio turnoRepo;
-
 
         TurnoViewHolder(@NonNull View itemView) {
             super(itemView);

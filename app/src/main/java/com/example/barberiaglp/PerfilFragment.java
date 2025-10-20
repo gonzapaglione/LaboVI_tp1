@@ -32,7 +32,8 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.List;
 
 public class PerfilFragment extends Fragment {
-    public PerfilFragment(){}
+    public PerfilFragment() {
+    }
 
     Button logOut, btnCargarTurnosPasados;
     private UsuarioRepositorio usuarioRepo;
@@ -47,7 +48,7 @@ public class PerfilFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
         logOut = view.findViewById(R.id.btnLogOut);
         SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
@@ -65,7 +66,7 @@ public class PerfilFragment extends Fragment {
         cantidadCortesPelo = view.findViewById(R.id.cantidadCortePelo);
         cantidadCortesBarba = view.findViewById(R.id.cantidadCorteBarba);
         cantidadCortesPeloYBarba = view.findViewById(R.id.cantidadCortePeloYBarba);
-        btnCargarTurnosPasados= view.findViewById(R.id.btnCargarTurnosPasados);
+        btnCargarTurnosPasados = view.findViewById(R.id.btnCargarTurnosPasados);
 
         editar.setOnClickListener(v -> activarEdicion(v));
         btnTogglePassword = view.findViewById(R.id.btnTogglePassword);
@@ -78,11 +79,9 @@ public class PerfilFragment extends Fragment {
             DataSeeder.cargarTurnosPredetermiandos(getContext());
         });
 
-
         // 4. Llama al nuevo metodo para cargar los datos
         colocarDatosUsuario();
         cargarHistorialServicios();
-
 
         // 3 Le asignás el listener
         logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
@@ -116,14 +115,16 @@ public class PerfilFragment extends Fragment {
             int finalCantidadCB = cantidadCB;
             int finalCantidadCPYB = cantidadCPYB;
 
-            cantidadCortesPelo.setText(String.valueOf(finalCantidadCP));
-            cantidadCortesBarba.setText(String.valueOf(finalCantidadCB));
-            cantidadCortesPeloYBarba.setText(String.valueOf(finalCantidadCPYB));
-
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    cantidadCortesPelo.setText(String.valueOf(finalCantidadCP));
+                    cantidadCortesBarba.setText(String.valueOf(finalCantidadCB));
+                    cantidadCortesPeloYBarba.setText(String.valueOf(finalCantidadCPYB));
+                });
+            }
 
         });
     }
-
 
     public void mostrarDialogoCerrarSesion() {
         // Crear un título con color blanco
@@ -141,8 +142,7 @@ public class PerfilFragment extends Fragment {
         // Cambiar el fondo
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(
-                    new ColorDrawable(getResources().getColor(R.color.red_3))
-            );
+                    new ColorDrawable(getResources().getColor(R.color.red_3)));
         }
 
         // Botones blancos
@@ -153,10 +153,11 @@ public class PerfilFragment extends Fragment {
 
         // Mensaje blanco
         TextView message = dialog.findViewById(android.R.id.message);
-        if (message != null) message.setTextColor(getResources().getColor(R.color.white));
+        if (message != null)
+            message.setTextColor(getResources().getColor(R.color.white));
     }
 
-    public void cerrarsesion(){
+    public void cerrarsesion() {
         SharedPreferences preferences = requireActivity()
                 .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -226,13 +227,15 @@ public class PerfilFragment extends Fragment {
         // Llamamos a getUsuarioActual para tener el objeto de usuario más reciente
         usuarioRepo.getUsuarioActual(usuarioActual -> {
             if (usuarioActual != null) {
-                // 1. Actualizamos el objeto 'usuario' en memoria con los nuevos datos de los EditText
+                // 1. Actualizamos el objeto 'usuario' en memoria con los nuevos datos de los
+                // EditText
                 usuarioActual.nombre = nombre.getText().toString();
                 usuarioActual.apellido = apellido.getText().toString();
                 usuarioActual.email = email.getText().toString();
                 usuarioActual.password = password.getText().toString();
 
-                // 2. Le pasamos el objeto actualizado al repositorio para que lo guarde en la BD
+                // 2. Le pasamos el objeto actualizado al repositorio para que lo guarde en la
+                // BD
                 usuarioRepo.update(usuarioActual);
 
                 if (getActivity() != null) {
@@ -245,14 +248,13 @@ public class PerfilFragment extends Fragment {
                 // Manejar caso de error
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "Error: No se pudo encontrar el usuario para actualizar", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Error: No se pudo encontrar el usuario para actualizar",
+                                Toast.LENGTH_LONG).show();
                     });
                 }
             }
         });
     }
-
-
 
     private void restaurarEstadoVisual() {
         // Cambiamos el texto del botón de vuelta a "Editar"
@@ -277,7 +279,7 @@ public class PerfilFragment extends Fragment {
         isPasswordVisible = !isPasswordVisible;
 
         if (isPasswordVisible) {
-            //mostrar contraseña
+            // mostrar contraseña
             password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 
             // cambiamos el icono al ojo "tachado"
