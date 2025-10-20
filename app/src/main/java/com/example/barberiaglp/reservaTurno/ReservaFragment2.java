@@ -5,7 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -28,26 +29,22 @@ public class ReservaFragment2 extends Fragment {
         androidx.recyclerview.widget.RecyclerView recycler = view.findViewById(R.id.recyclerServicios);
         recycler.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
 
-        // Cargar barberos desde la BD y setear adapter con item_reserva_2
-        BD.AppDatabase.databaseWriteExecutor.execute(() -> {
-            java.util.List<Modelos.Usuario> barberos = BD.AppDatabase.getInstance(requireContext()).usuarioDao()
-                    .obtenerPorRol("Barbero");
-            requireActivity().runOnUiThread(() -> {
-                ReservaBarberoAdapter adapter = new ReservaBarberoAdapter(barberos, R.layout.item_reserva_2);
-                adapter.setOnItemClickListener(u -> {
-                    // Guardar nombre completo en el ViewModel como peluquero seleccionado
-                    String nombreCompleto = (u.nombre != null ? u.nombre : "") + " "
-                            + (u.apellido != null ? u.apellido : "");
-                    viewModel.setNombreCliente(nombreCompleto.trim());
-                });
-                recycler.setAdapter(adapter);
-            });
+
+        // OBSERVAR LA LISTA FILTRADA DE BARBEROS
+        viewModel.getBarberosFiltrados().observe(getViewLifecycleOwner(), barberos -> {
+            ReservaBarberoAdapter adapter = new ReservaBarberoAdapter(barberos, R.layout.item_reserva_2);
+            adapter.setOnItemClickListener(barbero -> viewModel.setBarbero(barbero));
+            recycler.setAdapter(adapter);
         });
 
         Button btnNext = view.findViewById(R.id.btnNext2);
         btnNext.setOnClickListener(v -> {
-            // si quieres tomar la selección real, se puede expandir el adapter para manejar
-            // clicks
+            if (viewModel.getBarberoSeleccionado().getValue() == null) {
+                Toast.makeText(getContext(), "Seleccione un barbero para continuar", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            viewModel.prepararFechasParaBarberoSeleccionado();
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.reserva_fragment_container, new ReservaFragment3())
@@ -55,7 +52,7 @@ public class ReservaFragment2 extends Fragment {
                     .commit();
         });
 
-        View btnBack = view.findViewById(R.id.btnBack);
+        View btnBack = view.findViewById(R.id.btnBack3);
         if (btnBack != null)
             btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
 

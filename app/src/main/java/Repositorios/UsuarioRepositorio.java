@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
+import java.util.ArrayList;
 import java.util.List;
 import android.app.Application;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences;
 import androidx.lifecycle.LiveData; // Importante para observar cambios en la lista
 import java.util.List;
 
+import Daos.BarberoServicioDao;
 import Daos.UsuarioDao;
 import Modelos.Usuario;
 import BD.AppDatabase; // La clase de tu base de datos
@@ -19,12 +21,13 @@ public class UsuarioRepositorio {
     private UsuarioDao usuarioDao;
     private Application application;
     private LiveData<List<Usuario>> allUsers; // Para observar la lista de usuarios
-
+    private BarberoServicioDao barberoServicioDao;
     // El constructor recibe la aplicación para poder obtener el contexto de forma segura
     public UsuarioRepositorio(Application application) {
         this.application = application; // Guarda la aplicación
         AppDatabase db = AppDatabase.getInstance(application);
         usuarioDao = db.usuarioDao();
+        barberoServicioDao = db.BarberoServicioDao();
     }
 
     // La inserción se ejecuta en un hilo secundario.
@@ -80,5 +83,18 @@ public class UsuarioRepositorio {
         AppDatabase.databaseWriteExecutor.execute(() -> {
             usuarioDao.update(usuario);
         });
+    }
+
+    public List<Usuario> getBarberosPorServicio(int servicioId) {
+        // 1. Obtiene los IDs de los barberos que ofrecen el servicio
+        List<Integer> barberoIds = barberoServicioDao.getBarberoIdsPorServicio(servicioId);
+
+        // 2. Si la lista de IDs no está vacía, busca los objetos Usuario completos
+        if (barberoIds != null && !barberoIds.isEmpty()) {
+            return usuarioDao.getUsersByIds(barberoIds);
+        } else {
+            // Si ningún barbero ofrece ese servicio, devuelve una lista vacía
+            return new ArrayList<>();
+        }
     }
 }

@@ -53,6 +53,7 @@ public class PerfilFragment extends Fragment {
         usuarioActualId = preferences.getInt("userId", -1);
         usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
         turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
+        cargarHistorialServicios();
 
         logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
         fechadesde = view.findViewById(R.id.fechaClienteDesde);

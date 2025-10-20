@@ -13,6 +13,10 @@ public interface HorarioDao {
     @Insert
     void insertar(Horario horario);
 
-    @Query("SELECT * FROM horarios WHERE barberoId = :barberoId")
-    List<Horario> obtenerHorariosDeBarbero(int barberoId);
+    @Query("SELECT * FROM horarios WHERE barberoId = :barberoId AND dia = :diaSemana")
+    List<Horario> obtenerHorariosPorBarberoYDia(int barberoId, String diaSemana);
+    @Query("SELECT * FROM horarios")
+    List<Horario> obtenerTodos();
+
+
 }

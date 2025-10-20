@@ -38,4 +38,9 @@ public interface UsuarioDao {
 
     @Query("SELECT * FROM usuarios WHERE id = :id")
     Usuario findById(int id);
+
+    // En Daos/UsuarioDao.java
+    @Query("SELECT * FROM usuarios WHERE id IN (:userIds)")
+    List<Usuario> getUsersByIds(List<Integer> userIds);
+
 }

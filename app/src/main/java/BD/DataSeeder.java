@@ -4,6 +4,7 @@ import android.content.Context;
 import java.util.List;
 
 import Modelos.BarberoServicios;
+import Modelos.Horario;
 import Modelos.Servicio;
 import Modelos.Turno;
 import Modelos.Usuario;
@@ -13,6 +14,8 @@ public class DataSeeder {
     public static void cargarDatos(Context context){
         cargarServiciosPredeterminados(context);
         cargarBarberosPredeterminados(context);
+        cargarHorariosPredeterminados(context);
+        cargarBarberoServicioPredeterminados(context);
     }
 
     public static void cargarTurnosPredetermiandos(Context context) {
@@ -26,7 +29,7 @@ public class DataSeeder {
             turno1.servicioId = 1;
             turno1.barberoId = 4;
             turno1.clienteId = 1;
-            turno1.estado = "Pendiente";
+            turno1.estado = "Atendido";
 
             Turno turno2 = new Turno();
             turno2.fecha = "2025-10-28";
@@ -115,6 +118,142 @@ public class DataSeeder {
 
             }
 
+        }
+
+        private static void cargarBarberoServicioPredeterminados(Context context) {
+        AppDatabase db = AppDatabase.getInstance(context);
+        List<BarberoServicios> barberoServiciosExistentes = db.BarberoServicioDao().obtenerTodos();
+        if(barberoServiciosExistentes.isEmpty()) {
+         BarberoServicios barberoServicio1 = new BarberoServicios();
+         barberoServicio1.barberoId = 2;
+         barberoServicio1.servicioId = 1;
+         db.BarberoServicioDao().insert(barberoServicio1);
+
+         BarberoServicios barberoServicio2 = new BarberoServicios();
+         barberoServicio2.barberoId = 2;
+         barberoServicio2.servicioId = 2;
+         db.BarberoServicioDao().insert(barberoServicio2);
+
+         BarberoServicios barberoServicio3 = new BarberoServicios();
+         barberoServicio3.barberoId = 2;
+         barberoServicio3.servicioId = 3;
+         db.BarberoServicioDao().insert(barberoServicio3);
+
+         BarberoServicios barberoServicio4 = new BarberoServicios();
+         barberoServicio4.barberoId = 3;
+         barberoServicio4.servicioId = 1;
+         db.BarberoServicioDao().insert(barberoServicio4);
+
+         BarberoServicios barberoServicio5 = new BarberoServicios();
+         barberoServicio5.barberoId = 4;
+         barberoServicio5.servicioId = 2;
+         db.BarberoServicioDao().insert(barberoServicio5);
+        }
+    }
+
+        private static void cargarHorariosPredeterminados(Context context){
+            AppDatabase db = AppDatabase.getInstance(context);
+            List<Horario> horariosExistentes = db.horarioDao().obtenerTodos();
+            if(horariosExistentes.isEmpty()){
+                Horario horario1 = new Horario();
+                horario1.barberoId = 2;
+                horario1.dia = "Lunes";
+                horario1.horaInicio = "10:00";
+                horario1.horaFin = "20:00";
+                db.horarioDao().insertar(horario1);
+
+                Horario horario2 = new Horario();
+                horario2.barberoId = 2;
+                horario2.dia = "Martes";
+                horario2.horaInicio = "10:00";
+                horario2.horaFin = "20:00";
+                db.horarioDao().insertar(horario2);
+
+                Horario horario3 = new Horario();
+                horario3.barberoId = 2;
+                horario3.dia = "Miercoles";
+                horario3.horaInicio = "10:00";
+                horario3.horaFin = "20:00";
+                db.horarioDao().insertar(horario3);
+
+                Horario horario4 = new Horario();
+                horario4.barberoId = 2;
+                horario4.dia = "Jueves";
+                horario4.horaInicio = "10:00";
+                horario4.horaFin = "20:00";
+                db.horarioDao().insertar(horario4);
+
+                Horario horario5 = new Horario();
+                horario5.barberoId = 2;
+                horario5.dia = "Viernes";
+                horario5.horaInicio = "14:00";
+                horario5.horaFin = "22:00";
+                db.horarioDao().insertar(horario5);
+
+                Horario horario6 = new Horario();
+                horario6.barberoId = 3;
+                horario6.dia = "Lunes";
+                horario6.horaInicio = "14:00";
+                horario6.horaFin = "21:00";
+                db.horarioDao().insertar(horario6);
+
+                Horario horario7 = new Horario();
+                horario7.barberoId = 3;
+                horario7.dia = "Martes";
+                horario7.horaInicio = "14:00";
+                horario7.horaFin = "21:00";
+                db.horarioDao().insertar(horario7);
+
+                Horario horario8 = new Horario();
+                horario8.barberoId = 3;
+                horario8.dia = "Miercoles";
+                horario8.horaInicio = "14:00";
+                horario8.horaFin = "21:00";
+                db.horarioDao().insertar(horario8);
+
+                Horario horario9 = new Horario();
+                horario9.barberoId = 3;
+                horario9.dia = "Jueves";
+                horario9.horaInicio = "14:00";
+                horario9.horaFin = "21:00";
+                db.horarioDao().insertar(horario9);
+
+                Horario horario10 = new Horario();
+                horario10.barberoId = 3;
+                horario10.dia = "Viernes";
+                horario10.horaInicio = "14:00";
+                horario10.horaFin = "22:30";
+                db.horarioDao().insertar(horario10);
+
+                Horario horario11 = new Horario();
+                horario11.barberoId = 4;
+                horario11.dia = "Lunes";
+                horario11.horaInicio = "14:00";
+                horario11.horaFin = "21:00";
+                db.horarioDao().insertar(horario11);
+
+                Horario horario12 = new Horario();
+                horario12.barberoId = 4;
+                horario12.dia = "Martes";
+                horario12.horaInicio = "14:00";
+                horario12.horaFin = "21:00";
+                db.horarioDao().insertar(horario12);
+
+                Horario horario13 = new Horario();
+                horario13.barberoId = 4;
+                horario13.dia = "Jueves";
+                horario13.horaInicio = "14:00";
+                horario13.horaFin = "22:30";
+                db.horarioDao().insertar(horario13);
+
+                Horario horario14 = new Horario();
+                horario14.barberoId = 4;
+                horario14.dia = "Viernes";
+                horario14.horaInicio = "14:00";
+                horario14.horaFin = "22:30";
+                db.horarioDao().insertar(horario14);
+
+            }
         }
 
 }

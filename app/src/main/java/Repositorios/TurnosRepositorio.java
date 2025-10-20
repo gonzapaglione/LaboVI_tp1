@@ -86,5 +86,8 @@ public class TurnosRepositorio {
         Toast.makeText(application, "¡Turnos cargados!", Toast.LENGTH_SHORT).show();
     }
 
+    public List<String> getHorasOcupadas(int barberoId, String fecha) {
+        return turnoDao.getHorasOcupadas(barberoId, fecha);
+    }
 
 }

@@ -55,7 +55,7 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ViewHold
         }
 
         holder.itemView.setOnClickListener(v -> {
-            // click en todo el item equivale a seleccionar
+            // click en toodo el item equivale a seleccionar
             if (holder.rb != null) {
                 selectPosition(position);
             } else {
@@ -90,7 +90,6 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ViewHold
             super(itemView);
             tvTitulo = itemView.findViewById(R.id.tvServicioTitulo);
             tvDescripcion = itemView.findViewById(R.id.tvServicioDescripcion);
-            // rb puede no existir en layout item_reserva_2
             rb = itemView.findViewById(R.id.rbSeleccion);
         }
     }

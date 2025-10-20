@@ -33,4 +33,7 @@ public class BarberoServicios {
         this.barberoId = barberoId;
         this.servicioId = servicioId;
     }
+
+    public BarberoServicios() {
+    }
 }

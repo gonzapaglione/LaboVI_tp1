@@ -16,12 +16,12 @@
         android:layout_marginBottom="8dp">
 
         <ImageButton
-            android:id="@+id/btnBack"
+            android:id="@+id/btnBack3"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_back"
-            android:contentDescription="Atrás"
+            android:contentDescription="@string/atr_s"
             android:tint="@android:color/white" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Elige un horario"
+            android:text="@string/elige_un_horario"
             android:textColor="@android:color/white"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -40,26 +40,39 @@
 
     <!-- Selección de fecha y hora -->
     <TextView
-        android:id="@+id/tvSeleccionFecha"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fecha no seleccionada"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp" />
-
-    <Button
-        android:id="@+id/btnPickDate"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/botones"
-        app:backgroundTint="#8B0000"
-        android:text="Seleccionar fecha y hora"
-        android:textAllCaps="false"
+        android:text="Selecciona la fecha"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:outlineAmbientShadowColor="@android:color/white"
         android:textColor="#FFFFFF"/>
+
+    <!-- Selector de Hora -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selecciona la hora"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerHoras"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/spinner_background"
+        android:spinnerMode="dropdown" />
 
     <View
         android:layout_weight="1"

@@ -34,5 +34,8 @@ public interface TurnoDao {
     @Update
     void update(Turno turno);
 
+    @Query("SELECT horaInicio FROM turnos WHERE barberoId = :barberoId AND fecha = :fecha")
+    List<String> getHorasOcupadas(int barberoId, String fecha);
+
 
 }

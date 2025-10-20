@@ -16,7 +16,6 @@ public interface BarberoServicioDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(BarberoServicios barberoServicio);
 
-    // Esta es la consulta MÁGICA.
     // Une las tablas 'servicios' y 'barbero_servicios' para obtener todos los
     // servicios (objetos Servicio completos) que corresponden a un barbero específico (barberoId).
     @Query("SELECT s.* FROM servicios s INNER JOIN barbero_servicios bs ON s.id = bs.servicioId WHERE bs.barberoId = :barberoId")
@@ -24,4 +23,7 @@ public interface BarberoServicioDao {
 
     @Query("SELECT * FROM barbero_servicios")
     List<BarberoServicios> obtenerTodos();
+
+    @Query("SELECT barberoId FROM barbero_servicios WHERE servicioId = :servicioId")
+    List<Integer> getBarberoIdsPorServicio(int servicioId);
 }

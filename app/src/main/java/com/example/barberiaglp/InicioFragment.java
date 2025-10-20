@@ -11,6 +11,7 @@ import android.widget.TextView;
 import BD.AppDatabase;
 import Daos.UsuarioDao;
 import Modelos.Usuario;
+import Repositorios.UsuarioRepositorio;
 
 public class InicioFragment extends Fragment {
     public InicioFragment(){}
@@ -28,6 +29,7 @@ public class InicioFragment extends Fragment {
         bienvenido = v.findViewById(R.id.textBienvenida);
         SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String mailGuardado = preferences.getString("userEmail", "");
+
 
         new Thread(() -> {
             // Esta parte se ejecuta fuera del hilo principal

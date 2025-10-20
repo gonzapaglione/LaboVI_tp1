@@ -35,8 +35,6 @@ public class TurnosFragment extends Fragment {
     private TurnoAdapter adapterProximos, adapterPasados;
     private FloatingActionButton fabAgregar;
     private LinearLayout btnProximos, btnPasados;
-    private TurnoDao turnoDao;
-
     private TurnosRepositorio turnoRepo;
     private int usuarioActualId = -1;
 
@@ -49,8 +47,6 @@ public class TurnosFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_turnos, container, false);
 
-        AppDatabase db = AppDatabase.getInstance(requireContext());
-        turnoDao = db.turnoDao();
         turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
 
         tvProximos = view.findViewById(R.id.tvProximos);
@@ -122,6 +118,7 @@ public class TurnosFragment extends Fragment {
                     if (fechaActual.before(fechaTurno) || sdf.format(fechaActual).equals(sdf.format(fechaTurno))) {
                         turnosProximos.add(turnodetalle);
                     } else {
+                        cambiarEstado(turnodetalle);
                         turnosPasados.add(turnodetalle);
                     }
                 } catch (Exception e) {
@@ -138,6 +135,11 @@ public class TurnosFragment extends Fragment {
                 });
             }
         }).start();
+    }
+
+    private void cambiarEstado(TurnoConDetalles turnodetalle) {
+        turnodetalle.turno.estado = "Atendido";
+        turnoRepo.update(turnodetalle.turno);
     }
 
     private void mostrarProximos() {
