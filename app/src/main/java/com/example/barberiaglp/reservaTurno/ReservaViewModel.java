@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.prefs.Preferences;
@@ -87,6 +88,7 @@ public class ReservaViewModel extends AndroidViewModel {
             // Se reinicia la hora y se recalculan las horas.
             setHora(null);
             actualizarHorasDisponibles();
+           ;
         }
     }
 
@@ -154,16 +156,14 @@ public class ReservaViewModel extends AndroidViewModel {
 
         AppDatabase.databaseWriteExecutor.execute(() -> {
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(sdf.parse(fecha));
                 int diaSemanaa = cal.get(Calendar.DAY_OF_WEEK);
                 String diaSemana = obtenerDia(diaSemanaa);
 
-                List<Horario> horarios = horarioRepo.getHorariosPorBarberoYDia(barbero.getId(), diaSemana);
+                List<Horario> horarios = horarioRepo.getHorariosPorBarberoYDia(barbero.id, diaSemana);
                 if (horarios == null) horarios = new ArrayList<>();
 
-                List<String> horasOcupadas = turnoRepo.getHorasOcupadas(barbero.getId(), fecha);
+                List<String> horasOcupadas = turnoRepo.getHorasOcupadas(barbero.id, fecha);
                 if (horasOcupadas == null) horasOcupadas = new ArrayList<>();
 
                 List<String> disponibles = new ArrayList<>();
@@ -176,15 +176,30 @@ public class ReservaViewModel extends AndroidViewModel {
 
                     while (!inicio.plusMinutes(duracion).isAfter(fin)) {
                         String horaStr = inicio.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+                        // Si la fecha es hoy, verificamos que la hora sea posterior a la actual
                         if (!horasOcupadas.contains(horaStr)) {
-                            disponibles.add(horaStr);
+                            if (fecha.equals(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()))) {
+                                LocalTime ahora = LocalTime.now();
+                                if (inicio.isAfter(ahora)) { // Solo agregamos horas futuras
+                                    disponibles.add(horaStr);
+                                }
+                            } else {
+                                disponibles.add(horaStr); // Cualquier otra fecha
+                            }
                         }
+
                         inicio = inicio.plusMinutes(duracion);
                     }
                 }
 
+
                 horasDisponibles.postValue(disponibles);
                 Log.d("ReservaViewModel", "Horas disponibles generadas: " + disponibles);
+                Log.d("ReservaViewModel", "Barbero: " + barbero.nombre + ", Fecha: " + fecha + ", Servicio: " + servicio.nombre);
+                Log.d("ReservaViewModel", "Horarios: " + horarios);
+                Log.d("ReservaViewModel", "Horas ocupadas: " + horasOcupadas);
+                Log.d("ReservaViewModel", "Horas disponibles finales: " + disponibles);
 
             } catch (Exception e) {
                 Log.e("ReservaViewModel", "Error en actualizarHorasDisponibles", e);

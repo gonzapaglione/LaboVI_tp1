@@ -69,18 +69,20 @@
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text="Reservá tu próxima cita" />
+
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnReservarAhora"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:backgroundTint="#760106"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="10dp"
                         android:text="Reservar ahora"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:backgroundTint="#760106"
-                        app:cornerRadius="9dp"
-                        android:layout_marginStart="24dp"
-                        android:paddingVertical="10dp"
-                        android:paddingHorizontal="20dp" />
+                        app:cornerRadius="9dp" />
                 </LinearLayout>
             </RelativeLayout>
             <LinearLayout

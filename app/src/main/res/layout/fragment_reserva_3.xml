@@ -51,9 +51,17 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:outlineAmbientShadowColor="@android:color/white"
-        android:textColor="#FFFFFF"/>
+        android:layout_margin="16dp"
+        android:dateTextAppearance="@style/CalendarDateText"
+        android:weekDayTextAppearance="@style/CalendarWeekDayText"
+        android:focusedMonthDateColor="@color/white"
+        android:unfocusedMonthDateColor="@color/gray"
+        android:selectedWeekBackgroundColor="@color/red_primary"
+        android:weekSeparatorLineColor="@android:color/transparent"
+        android:firstDayOfWeek="2"
+    />
+
+
 
     <!-- Selector de Hora -->
     <TextView

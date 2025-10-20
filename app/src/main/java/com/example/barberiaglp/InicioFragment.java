@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import BD.AppDatabase;
 import Daos.UsuarioDao;
@@ -18,6 +19,7 @@ public class InicioFragment extends Fragment {
 
     TextView bienvenido;
     AppDatabase db = AppDatabase.getInstance(getContext());
+    Button reservar;
     UsuarioDao userDao = db.usuarioDao();
 
 
@@ -29,6 +31,11 @@ public class InicioFragment extends Fragment {
         bienvenido = v.findViewById(R.id.textBienvenida);
         SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         String mailGuardado = preferences.getString("userEmail", "");
+        reservar = v.findViewById(R.id.btnReservarAhora);
+        reservar.setOnClickListener(view -> {
+            startActivity(new android.content.Intent(requireContext(),
+                    com.example.barberiaglp.reservaTurno.ReservasActivity.class));
+        });
 
 
         new Thread(() -> {

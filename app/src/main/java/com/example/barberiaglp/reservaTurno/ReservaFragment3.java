@@ -115,7 +115,7 @@ public class ReservaFragment3 extends Fragment {
         // 1. Deshabilitar fechas pasadas.
         calendarView.setMinDate(calendar.getTimeInMillis());
 
-        // 2. Limitar la selección a, 30 días en el futuro.
+        // 2. Limitar la selección a, 40 días en el futuro.
         calendar.add(Calendar.DAY_OF_MONTH, 40);
         calendarView.setMaxDate(calendar.getTimeInMillis());
 
@@ -127,10 +127,8 @@ public class ReservaFragment3 extends Fragment {
             int diaDeLaSemana = selectedDate.get(Calendar.DAY_OF_WEEK);
             if (diaDeLaSemana == Calendar.SUNDAY || diaDeLaSemana == Calendar.SATURDAY) {
                 Toast.makeText(getContext(), "No se aceptan reservas en fin de semana", Toast.LENGTH_SHORT).show();
-                // Reiniciamos la selección en el ViewModel para invalidar el día.
                 viewModel.setFecha(null);
             } else {
-                // El día es válido, lo formateamos y lo guardamos en el ViewModel.
                 String fechaFormateada = sdf.format(selectedDate.getTime());
                 viewModel.setFecha(fechaFormateada);
             }
