@@ -20,37 +20,43 @@ public class DataSeeder {
 
     public static void cargarTurnosPredetermiandos(Context context) {
         AppDatabase db = AppDatabase.getInstance(context);
-        List<Turno> turnosExistentes = db.turnoDao().obtenerTodos();
 
-        if (turnosExistentes.isEmpty()) {
             Turno turno1 = new Turno();
             turno1.fecha = "2025-10-19";
             turno1.horaInicio = "10:00";
-            turno1.servicioId = 1;
+            turno1.servicioId = 2;
             turno1.barberoId = 4;
             turno1.clienteId = 1;
             turno1.estado = "Atendido";
 
             Turno turno2 = new Turno();
-            turno2.fecha = "2025-10-28";
-            turno2.horaInicio = "10:00";
-            turno2.servicioId = 1;
+            turno2.fecha = "2025-10-05";
+            turno2.horaInicio = "12:00";
+            turno2.servicioId = 3;
             turno2.barberoId = 2;
             turno2.clienteId = 1;
-            turno2.estado = "Pendiente";
+            turno2.estado = "Atendido";
 
             Turno turno3 = new Turno();
             turno3.fecha = "2025-09-13";
-            turno3.horaInicio = "10:00";
+            turno3.horaInicio = "20:00";
             turno3.servicioId = 1;
             turno3.barberoId = 3;
             turno3.clienteId = 1;
-            turno3.estado = "Atendido";
+            turno3.estado = "Cancelado";
+
+            Turno turno4 = new Turno();
+            turno4.fecha = "2025-08-03";
+            turno4.horaInicio = "20:00";
+            turno4.servicioId = 3;
+            turno4.barberoId = 2;
+            turno4.clienteId = 1;
+            turno4.estado = "Atendido";
 
             db.turnoDao().insertar(turno1);
             db.turnoDao().insertar(turno2);
-            db.turnoDao().insertar(turno3);
-        }
+            db.turnoDao().insertar(turno4);
+
     }
 
     public static void cargarServiciosPredeterminados(Context context) {

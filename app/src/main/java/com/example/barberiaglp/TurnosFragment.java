@@ -64,8 +64,8 @@ public class TurnosFragment extends Fragment {
         rvPasados.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // se crean adaptadpres con listas vacías
-        adapterProximos = new TurnoAdapter(new ArrayList<>());
-        adapterPasados = new TurnoAdapter(new ArrayList<>());
+        adapterProximos = new TurnoAdapter(new ArrayList<>(), turnoRepo);
+        adapterPasados = new TurnoAdapter(new ArrayList<>(), turnoRepo);
 
         rvProximos.setAdapter(adapterProximos);
         rvPasados.setAdapter(adapterPasados);
@@ -138,7 +138,9 @@ public class TurnosFragment extends Fragment {
     }
 
     private void cambiarEstado(TurnoConDetalles turnodetalle) {
-        turnodetalle.turno.estado = "Atendido";
+        if(turnodetalle.turno.estado.equals("Pendiente")){
+            turnodetalle.turno.estado = "Atendido";
+        }
         turnoRepo.update(turnodetalle.turno);
     }
 

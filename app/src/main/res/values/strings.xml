@@ -31,4 +31,5 @@
     <string name="previous">Previous</string>
     <string name="elige_un_horario">Elige un horario</string>
     <string name="atr_s">Atrás</string>
+    <string name="cancelar">Cancelar</string>
 </resources>

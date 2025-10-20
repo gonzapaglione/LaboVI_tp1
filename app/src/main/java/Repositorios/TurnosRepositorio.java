@@ -41,11 +41,6 @@ public class TurnosRepositorio {
         });
     }
 
-    public void deleteAllTurnos() {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            turnoDao.deleteAll();
-        });
-    }
 
     public void update(Turno turno) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
@@ -73,21 +68,17 @@ public class TurnosRepositorio {
 
 
     public List<Turno> getTurnosAtendidos(int clienteId) {
-        // 1. Usamos el nuevo métoodo del DAO para obtener solo los turnos atendidos.
         List<Turno> turnosAtendidos = turnoDao.getTurnosAtendidosPorCliente(clienteId);
         return turnosAtendidos;
-    }
-
-
-    public void cargarTurnosPredeterminados() {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
-            DataSeeder.cargarTurnosPredetermiandos(application);
-        });
-        Toast.makeText(application, "¡Turnos cargados!", Toast.LENGTH_SHORT).show();
     }
 
     public List<String> getHorasOcupadas(int barberoId, String fecha) {
         return turnoDao.getHorasOcupadas(barberoId, fecha);
     }
 
+    public void delete(Turno turno) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            turnoDao.delete(turno.id);
+        });
+    }
 }

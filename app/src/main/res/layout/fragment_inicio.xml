@@ -113,7 +113,7 @@
                             android:layout_width="99dp"
                             android:layout_height="99dp"
                             android:layout_marginBottom="4dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/ic_martin_lopez"
                             android:scaleType="centerCrop" />
                         <TextView
                             android:textColor="#FFFFFF"
@@ -126,12 +126,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:layout_marginEnd="41dp"
                         android:gravity="center_horizontal">
                         <ImageView
                             android:layout_width="99dp"
                             android:layout_height="99dp"
                             android:layout_marginBottom="4dp"
-                            android:src="@mipmap/ic_launcher"
+                            android:src="@mipmap/ic_jose_gomez"
                             android:scaleType="centerCrop" />
                         <TextView
                             android:textColor="#FFFFFF"
@@ -139,6 +140,26 @@
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:text="José Gomez" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+                        <ImageView
+                            android:layout_width="99dp"
+                            android:layout_height="99dp"
+                            android:layout_marginBottom="4dp"
+                            android:src="@mipmap/ic_juan_perez"
+                            android:scaleType="centerCrop" />
+                        <TextView
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:text="Juan Perez" />
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

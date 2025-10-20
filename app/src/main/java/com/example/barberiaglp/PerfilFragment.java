@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import BD.AppDatabase;
+import BD.DataSeeder;
 import Modelos.Turno;
 import Modelos.TurnoConDetalles;
 import Repositorios.TurnosRepositorio;
@@ -33,7 +34,7 @@ import java.util.List;
 public class PerfilFragment extends Fragment {
     public PerfilFragment(){}
 
-    Button logOut, btnBorrarTodo, btnBorrarTurnos, btnCargarTurnos, btnBorrarSharedP;
+    Button logOut, btnCargarTurnosPasados;
     private UsuarioRepositorio usuarioRepo;
     private TurnosRepositorio turnoRepo;
     TextView fechadesde, editar, cantidadCortesPelo, cantidadCortesBarba, cantidadCortesPeloYBarba;
@@ -54,7 +55,6 @@ public class PerfilFragment extends Fragment {
         usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
         turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
         cargarHistorialServicios();
-
         logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
         fechadesde = view.findViewById(R.id.fechaClienteDesde);
         nombre = view.findViewById(R.id.inputNombre);
@@ -65,6 +65,7 @@ public class PerfilFragment extends Fragment {
         cantidadCortesPelo = view.findViewById(R.id.cantidadCortePelo);
         cantidadCortesBarba = view.findViewById(R.id.cantidadCorteBarba);
         cantidadCortesPeloYBarba = view.findViewById(R.id.cantidadCortePeloYBarba);
+        btnCargarTurnosPasados= view.findViewById(R.id.btnCargarTurnosPasados);
 
         editar.setOnClickListener(v -> activarEdicion(v));
         btnTogglePassword = view.findViewById(R.id.btnTogglePassword);
@@ -73,40 +74,10 @@ public class PerfilFragment extends Fragment {
             togglePasswordVisibility();
         });
 
-
-        //temporal para las pruebas con la base de datos para eliminar tdos los usuarios
-        btnBorrarTodo = view.findViewById(R.id.btnBorrarTodo);
-        btnBorrarTodo.setOnClickListener(v -> {
-            usuarioRepo.deleteAllUsers();
-            Toast.makeText(getContext(), "¡Tabla de usuarios borrada!", Toast.LENGTH_SHORT).show();
-            cerrarsesion();
+        btnCargarTurnosPasados.setOnClickListener(v -> {
+            DataSeeder.cargarTurnosPredetermiandos(getContext());
         });
 
-
-        //temporal para las pruebas con la base de datos para eliminar tdos los turnos
-        btnBorrarTurnos = view.findViewById(R.id.btnBorrarTurnos);
-        btnBorrarTurnos.setOnClickListener(v -> {
-            turnoRepo.deleteAllTurnos();
-            Toast.makeText(getContext(), "¡Turnos borrados!", Toast.LENGTH_SHORT).show();
-        });
-
-        //botón para cargar turnos predeterminados
-        btnCargarTurnos = view.findViewById(R.id.btnCargarTurnos);
-        btnCargarTurnos.setOnClickListener(v -> {
-            turnoRepo.cargarTurnosPredeterminados();
-            Toast.makeText(getContext(), "¡Turnos cargados!", Toast.LENGTH_SHORT).show();
-        });
-
-        //boton para eliminar toodo de shared preferences
-        btnBorrarSharedP = view.findViewById(R.id.btnBorrarSharedP);
-        btnBorrarSharedP.setOnClickListener(v -> {
-           SharedPreferences preferencess = requireActivity()
-                   .getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-           SharedPreferences.Editor editor = preferencess.edit();
-           editor.clear();
-           editor.apply();
-           Toast.makeText(getContext(), "¡Shared preferences borrados!", Toast.LENGTH_SHORT).show();
-        });
 
         // 4. Llama al nuevo metodo para cargar los datos
         colocarDatosUsuario();
