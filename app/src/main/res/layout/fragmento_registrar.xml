@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:background="#230F10"
-    tools:context=".FragmentoRegistrar">
+    tools:context=".LoginAndRegister.FragmentoRegistrar">
 
     <LinearLayout
         android:layout_width="match_parent"

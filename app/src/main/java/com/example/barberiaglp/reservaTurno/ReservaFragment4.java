@@ -16,10 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.barberiaglp.R;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import BD.AppDatabase;
-import Modelos.Servicio;
-import Modelos.Turno;
-import Modelos.Usuario;
+import com.example.barberiaglp.BD.AppDatabase;
+import com.example.barberiaglp.Modelos.Servicio;
+import com.example.barberiaglp.Modelos.Turno;
+import com.example.barberiaglp.Modelos.Usuario;
 
 public class ReservaFragment4 extends Fragment {
     private ReservaViewModel viewModel;

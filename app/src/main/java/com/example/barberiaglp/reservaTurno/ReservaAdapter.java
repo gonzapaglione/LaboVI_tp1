@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import Modelos.Servicio;
+import com.example.barberiaglp.Modelos.Servicio;
 import com.example.barberiaglp.R;
 
 public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ViewHolder> {

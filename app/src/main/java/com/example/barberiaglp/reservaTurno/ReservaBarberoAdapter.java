@@ -12,7 +12,7 @@ import com.example.barberiaglp.R;
 
 import java.util.List;
 
-import Modelos.Usuario;
+import com.example.barberiaglp.Modelos.Usuario;
 
 public class ReservaBarberoAdapter extends RecyclerView.Adapter<ReservaBarberoAdapter.ViewHolder> {
     private final List<Usuario> items;

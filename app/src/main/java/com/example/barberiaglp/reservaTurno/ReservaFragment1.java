@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.barberiaglp.R;
 
-import Modelos.Servicio;
+import com.example.barberiaglp.Modelos.Servicio;
 
 public class ReservaFragment1 extends Fragment {
 

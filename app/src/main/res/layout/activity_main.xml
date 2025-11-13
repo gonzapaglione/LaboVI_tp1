@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#230F10"
-    tools:context=".MainActivity">
+    tools:context=".SeccionesPrincipales.MainActivity">
 
     <!-- Contenedor del contenido principal -->
     <FrameLayout
@@ -103,18 +103,18 @@
             android:background="?attr/selectableItemBackgroundBorderless">
 
             <ImageView
-                android:id="@+id/iconServicios"
+                android:id="@+id/iconSobreNosotros"
                 android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:src="@drawable/ic_scissors"
+                android:src="@drawable/ic_info"
                 app:tint="#BDBDBD" />
 
             <TextView
-                android:id="@+id/NavServicios"
+                android:id="@+id/NavSobreNosotros"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/servicios"
+                android:text="@string/sobre_nosotros"
                 android:textSize="12sp"
                 android:textColor="#C7C4C4" />
         </LinearLayout>

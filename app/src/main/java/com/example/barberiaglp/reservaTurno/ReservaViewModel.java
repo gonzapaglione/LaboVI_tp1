@@ -14,21 +14,19 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.prefs.Preferences;
 
-import BD.AppDatabase;
-import Modelos.Horario;
-import Modelos.Servicio;
-import Modelos.Usuario;
-import Repositorios.HorarioRepositorio;
-import Repositorios.ServicioRepositorio;
-import Repositorios.TurnosRepositorio;
-import Repositorios.UsuarioRepositorio;
+import com.example.barberiaglp.BD.AppDatabase;
+import com.example.barberiaglp.Modelos.Horario;
+import com.example.barberiaglp.Modelos.Servicio;
+import com.example.barberiaglp.Modelos.Usuario;
+import com.example.barberiaglp.Repositorios.HorarioRepositorio;
+import com.example.barberiaglp.Repositorios.ServicioRepositorio;
+import com.example.barberiaglp.Repositorios.TurnosRepositorio;
+import com.example.barberiaglp.Repositorios.UsuarioRepositorio;
 
 public class ReservaViewModel extends AndroidViewModel {
 
