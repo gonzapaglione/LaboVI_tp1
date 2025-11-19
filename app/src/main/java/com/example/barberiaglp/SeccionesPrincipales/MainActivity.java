@@ -24,6 +24,7 @@ import com.example.barberiaglp.R;
 import com.example.barberiaglp.SeccionesPrincipales.Inicio.InicioFragment;
 import com.example.barberiaglp.SeccionesPrincipales.Perfil.PerfilFragment;
 import com.example.barberiaglp.SeccionesPrincipales.SobreNosotros.MapsActivity;
+import com.example.barberiaglp.SeccionesPrincipales.SobreNosotros.SobreNosotrosFragment;
 import com.example.barberiaglp.SeccionesPrincipales.Turnos.TurnosFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -86,8 +87,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         navSobreNosotros.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, com.example.barberiaglp.SeccionesPrincipales.SobreNosotros.MapsActivity.class);
-            startActivity(intent);
+            replaceFragment(new SobreNosotrosFragment());
             highlightSelected(iconSobreNosotros, textoSobreNosotros);
         });
 
