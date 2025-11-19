@@ -33,4 +33,5 @@
     <string name="atr_s">Atrás</string>
     <string name="cancelar">Cancelar</string>
     <string name="sobre_nosotros">Sobre nosotros</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
