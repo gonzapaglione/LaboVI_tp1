@@ -31,7 +31,7 @@ public class ReservaFragment3 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reserva_3, container, false);
+        View view = inflater.inflate(R.layout.fragment_reserva_fechayhora, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ReservaViewModel.class);
 
         CalendarView calendarView = view.findViewById(R.id.calendarView);
