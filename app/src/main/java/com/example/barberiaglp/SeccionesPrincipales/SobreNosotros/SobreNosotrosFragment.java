@@ -35,7 +35,7 @@ public class SobreNosotrosFragment extends Fragment implements OnMapReadyCallbac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_servicios, container, false);
+        View view = inflater.inflate(R.layout.fragment_sobrenosotros, container, false);
 
         recyclerSobreNosotros = view.findViewById(R.id.recyclerServicios);
         recyclerSobreNosotros.setLayoutManager(new LinearLayoutManager(getContext()));
