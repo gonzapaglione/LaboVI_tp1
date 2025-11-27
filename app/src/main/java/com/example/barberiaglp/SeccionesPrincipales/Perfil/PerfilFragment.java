@@ -174,22 +174,26 @@ public class PerfilFragment extends Fragment {
     }
 
     public void colocarDatosUsuario() {
-        // Llama al metodo asincrono del repositorio para obtener el usuario actual
-        usuarioRepo.getUsuarioActual(usuarioActual -> {
-            // Este código se ejecuta cuando el repositorio devuelve el usuario.
+        // Obtener datos desde la API usando el userId guardado en SharedPreferences
+        usuarioRepo.getUserFromApi(usuarioActualId, (usuarioActual, error) -> {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (usuarioActual != null) {
                         // Usuario encontrado, ahora actualizamos la interfaz
-                        String textoFecha = usuarioActual.fechaRegistro;
+                        String textoFecha = usuarioActual.fechaRegistro != null
+                                && !usuarioActual.fechaRegistro.isEmpty()
+                                        ? usuarioActual.fechaRegistro
+                                        : "Fecha no disponible";
                         fechadesde.setText(textoFecha);
                         nombre.setText(usuarioActual.nombre);
                         apellido.setText(usuarioActual.apellido);
                         email.setText(usuarioActual.email);
                         password.setText(usuarioActual.password);
                     } else {
-                        // Si por alguna razón no se encuentra el usuario
-                        fechadesde.setText("Fecha no disponible");
+                        // Si hay error al obtener el usuario
+                        fechadesde.setText("Error al cargar datos");
+                        Toast.makeText(getContext(), error != null ? error : "Error desconocido", Toast.LENGTH_SHORT)
+                                .show();
                     }
                 });
             }
@@ -225,36 +229,41 @@ public class PerfilFragment extends Fragment {
     }
 
     private void guardarCambios() {
-        // Llamamos a getUsuarioActual para tener el objeto de usuario más reciente
-        usuarioRepo.getUsuarioActual(usuarioActual -> {
-            if (usuarioActual != null) {
-                // 1. Actualizamos el objeto 'usuario' en memoria con los nuevos datos de los
-                // EditText
-                usuarioActual.nombre = nombre.getText().toString();
-                usuarioActual.apellido = apellido.getText().toString();
-                usuarioActual.email = email.getText().toString();
-                usuarioActual.password = password.getText().toString();
+        // Obtenemos los valores de los campos
+        String nuevoNombre = nombre.getText().toString().trim();
+        String nuevoApellido = apellido.getText().toString().trim();
+        String nuevoEmail = email.getText().toString().trim();
+        String nuevaPassword = password.getText().toString();
 
-                // 2. Le pasamos el objeto actualizado al repositorio para que lo guarde en la
-                // BD
-                usuarioRepo.update(usuarioActual);
+        // Validaciones básicas
+        if (nuevoNombre.isEmpty() || nuevoApellido.isEmpty() || nuevoEmail.isEmpty()) {
+            Toast.makeText(getContext(), "Completa todos los campos obligatorios", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        restaurarEstadoVisual();
-                        Toast.makeText(getContext(), "Datos actualizados correctamente", Toast.LENGTH_SHORT).show();
-                    });
-                }
-            } else {
-                // Manejar caso de error
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        Toast.makeText(getContext(), "Error: No se pudo encontrar el usuario para actualizar",
-                                Toast.LENGTH_LONG).show();
-                    });
-                }
-            }
-        });
+        // Si la password es la máscara, enviamos null o string vacío
+        if (nuevaPassword.equals("••••••••")) {
+            nuevaPassword = ""; // O puedes manejarlo diferente según tu API
+        }
+
+        // Actualizar usuario en la API
+        usuarioRepo.updateUserInApi(usuarioActualId, nuevoNombre, nuevoApellido, nuevoEmail, nuevaPassword,
+                (usuarioActualizado, error) -> {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(() -> {
+                            if (usuarioActualizado != null) {
+                                restaurarEstadoVisual();
+                                Toast.makeText(getContext(), "Datos actualizados correctamente", Toast.LENGTH_SHORT)
+                                        .show();
+                                // Recargar los datos desde la API
+                                colocarDatosUsuario();
+                            } else {
+                                Toast.makeText(getContext(), error != null ? error : "Error al actualizar datos",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                });
     }
 
     private void restaurarEstadoVisual() {

@@ -12,10 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
-import com.example.barberiaglp.Modelos.Usuario;
 import com.example.barberiaglp.R;
 import com.example.barberiaglp.Repositorios.UsuarioRepositorio;
 
@@ -27,12 +23,13 @@ public class FragmentoRegistrar extends Fragment {
     private UsuarioRepositorio usuarioRepo;
     private static final int MIN_PASSWORD_LENGTH = 8;
 
-    public FragmentoRegistrar(){}
+    public FragmentoRegistrar() {
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragmento_registrar, container, false);
 
@@ -42,7 +39,7 @@ public class FragmentoRegistrar extends Fragment {
         etPassword = view.findViewById(R.id.inputPassword);
         etPassword2 = view.findViewById(R.id.inputPassword2);
 
-        //Inicializar el repositorio
+        // Inicializar el repositorio
         Application application = requireActivity().getApplication();
         usuarioRepo = new UsuarioRepositorio(application);
 
@@ -51,7 +48,7 @@ public class FragmentoRegistrar extends Fragment {
         return view;
     }
 
-    private void validarYGuardarDatos(){
+    private void validarYGuardarDatos() {
 
         String nombre = etNombre.getText().toString().trim();
         String apellido = etApellido.getText().toString().trim();
@@ -59,9 +56,8 @@ public class FragmentoRegistrar extends Fragment {
         String password = etPassword.getText().toString();
         String password2 = etPassword2.getText().toString();
 
-
         // 1. Verificar campos vacíos
-        if (nombre.isEmpty() || apellido.isEmpty() ||email.isEmpty() || password.isEmpty() || password2.isEmpty()) {
+        if (nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || password.isEmpty() || password2.isEmpty()) {
             Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -72,68 +68,42 @@ public class FragmentoRegistrar extends Fragment {
             return;
         }
 
-        // 3.  Verificar largo de contraseña
+        // 3. Verificar largo de contraseña
         if (password.length() < MIN_PASSWORD_LENGTH) {
-            Toast.makeText(getContext(), "La contraseña debe tener al menos " + MIN_PASSWORD_LENGTH + " caracteres", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "La contraseña debe tener al menos " + MIN_PASSWORD_LENGTH + " caracteres",
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
         // 4. Verificar claves iguales
-        if(!password.equals(password2)){
+        if (!password.equals(password2)) {
             Toast.makeText(getContext(), "Las contraseñas deben ser iguales", Toast.LENGTH_SHORT).show();
             return;
         }
 
-
-        usuarioRepo.findByEmail(email, usuarioEncontrado -> {
-            // Este código se ejecuta cuando la base de datos responde
+        // Llamar a la API para registrar el usuario
+        usuarioRepo.register(nombre, apellido, email, password, (usuario, error) -> {
             // Verificamos que el fragmento siga "vivo" antes de actuar
             if (getActivity() == null) {
                 return;
             }
             // Volvemos al hilo principal para actualizar la UI (mostrar Toasts)
             getActivity().runOnUiThread(() -> {
-                if (usuarioEncontrado != null) {
-                    // El email SÍ existe
-                    Toast.makeText(getContext(), "El correo electrónico ya está registrado", Toast.LENGTH_SHORT).show();
+                if (usuario != null) {
+                    // Registro exitoso
+                    Toast.makeText(getContext(), "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                    limpiarInputs();
                 } else {
-                    // El email NO existe, procedemos a crear el usuario
-                    crearUsuario(nombre, apellido, email, password);
+                    // Error en el registro
+                    Toast.makeText(getContext(), error != null ? error : "Error al registrar usuario",
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         });
     }
 
-
-    private void crearUsuario(String nombre, String apellido, String email, String password) {
-        Usuario nuevo = new Usuario();
-        nuevo.nombre = nombre;
-        nuevo.apellido = apellido;
-        nuevo.email = email;
-        nuevo.password = password;
-        nuevo.rol = "Cliente";
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            java.time.LocalDate hoy = java.time.LocalDate.now();
-            int dia = hoy.getDayOfMonth();
-            String mes = hoy.getMonth().getDisplayName(java.time.format.TextStyle.FULL, new Locale("es", "ES"));
-            int anio = hoy.getYear();
-            String mesCapitalizado = mes.substring(0, 1).toUpperCase() + mes.substring(1);
-            nuevo.fechaRegistro = dia + " de " + mesCapitalizado + ", " + anio;
-
-        } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("d 'de' MMMM, yyyy", new Locale("es", "ES"));
-            nuevo.fechaRegistro = sdf.format(new java.util.Date());
-        }
-
-        usuarioRepo.insert(nuevo);
-        Toast.makeText(getContext(), "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-        limpiarInputs();
-    }
-
-
     private void limpiarInputs() {
-        //limpiar inputs
+        // limpiar inputs
         etNombre.setText("");
         etEmail.setText("");
         etPassword.setText("");

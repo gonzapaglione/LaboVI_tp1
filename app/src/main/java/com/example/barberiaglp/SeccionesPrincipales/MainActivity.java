@@ -38,30 +38,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Carga de valores predeterminados en la bd
-        DataSeeder.cargarDatos(this);
+        // Carga de valores predeterminados en la bd
+        try {
+            DataSeeder.cargarDatos(this);
+        } catch (Exception e) {
+            // Ignorar errores de carga de datos iniciales
+            e.printStackTrace();
+        }
 
-        //Esto es para que el nav no tape el contenido del fragmento
+        // Esto es para que el nav no tape el contenido del fragmento
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.fragmentContainer), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0); // O deja el padding en 0, dependiendo de lo que necesites
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0); // O deja el padding en 0, dependiendo
+                                                                                // de lo que necesites
             return insets;
         });
         EdgeToEdge.enable(this); // Esto se encarga del fitsSystemWindows
         // Asegurar que los iconos de la barra de estado sean claros (blancos)
-        WindowInsetsControllerCompat windowInsetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        WindowInsetsControllerCompat windowInsetsController = WindowCompat.getInsetsController(getWindow(),
+                getWindow().getDecorView());
         if (windowInsetsController != null) {
             windowInsetsController.setAppearanceLightStatusBars(false);
         }
         verificarSesion();
 
-        //Botones
+        // Botones
         navInicio = findViewById(R.id.navInicio);
         navTurnos = findViewById(R.id.navTurnos);
         navSobreNosotros = findViewById(R.id.navServicios);
         navPerfil = findViewById(R.id.navPerfil);
 
-        //Elementos para cambiar el color al seleccionado (Icono y Texto)
+        // Elementos para cambiar el color al seleccionado (Icono y Texto)
         iconInicio = findViewById(R.id.iconInicio);
         textoInicio = findViewById(R.id.NavInicio);
         iconTurnos = findViewById(R.id.iconTurnos);
@@ -96,13 +103,14 @@ public class MainActivity extends AppCompatActivity {
             highlightSelected(iconPerfil, textoPerfil);
         });
 
-
     }
+
     private void verificarSesion() {
         // Obtiene el archivo de preferencias "UserPrefs"
         SharedPreferences preferences = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
 
-        // Lee el valor booleano de "isLoggedIn". Si no existe, devuelve 'false' por defecto.
+        // Lee el valor booleano de "isLoggedIn". Si no existe, devuelve 'false' por
+        // defecto.
         boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
 
         if (!isLoggedIn) { // Si el usuario NO ha iniciado sesión:
@@ -115,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
     }
-
 
     private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()
