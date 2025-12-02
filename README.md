@@ -2,6 +2,11 @@
 Tema: Barbershop (Gestion de turnos de peluqueria)
 Integrantes: Guerrieri Viaña Lourdes, Lopez Paglione Gonzalo
 
+##
+En local.properties agregar:
+BASE_URL={URL dada por el profe}
+MAPS_API_KEY={...}
+##
 
 <a href="https://www.figma.com/design/x9nEl5qfaGHCQ1dCjxYXwW/Barber%C3%ADa---LAB-VI?node-id=0-1&t=f5K7ZqMLFtHC3fZy-1">
 Nuestras interfaces
