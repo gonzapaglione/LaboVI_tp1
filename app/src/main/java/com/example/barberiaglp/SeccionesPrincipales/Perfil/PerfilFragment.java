@@ -51,12 +51,24 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
-        logOut = view.findViewById(R.id.btnLogOut);
-        SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        usuarioActualId = preferences.getInt("userId", -1);
+
+        // Inicializar repositorios PRIMERO
         usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
         turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
-        cargarHistorialServicios();
+
+        logOut = view.findViewById(R.id.btnLogOut);
+        SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+
+        // Obtener el ID local del usuario desde SharedPreferences
+        usuarioActualId = preferences.getInt("userLocalId", -1);
+
+        if (usuarioActualId != -1) {
+            cargarHistorialServicios();
+            colocarDatosUsuario();
+        } else {
+            Toast.makeText(getContext(), "Error: No se pudo identificar al usuario.", Toast.LENGTH_LONG).show();
+        }
+
         logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
         fechadesde = view.findViewById(R.id.fechaClienteDesde);
         nombre = view.findViewById(R.id.inputNombre);
@@ -77,15 +89,9 @@ public class PerfilFragment extends Fragment {
         });
 
         btnCargarTurnosPasados.setOnClickListener(v -> {
-            DataSeeder.cargarTurnosPredetermiandos(getContext());
+            DataSeeder.cargarTurnosPredetermiandos(getContext(), usuarioActualId);
+            Toast.makeText(getContext(), "Turnos cargados", Toast.LENGTH_SHORT).show();
         });
-
-        // 4. Llama al nuevo metodo para cargar los datos
-        colocarDatosUsuario();
-        cargarHistorialServicios();
-
-        // 3 Le asignás el listener
-        logOut.setOnClickListener(v -> mostrarDialogoCerrarSesion());
 
         return view;
     }
@@ -174,8 +180,12 @@ public class PerfilFragment extends Fragment {
     }
 
     public void colocarDatosUsuario() {
-        // Obtener datos desde la API usando el userId guardado en SharedPreferences
-        usuarioRepo.getUserFromApi(usuarioActualId, (usuarioActual, error) -> {
+        // Obtener el API ID desde SharedPreferences para llamar a la API
+        SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int apiId = preferences.getInt("userApiId", -1);
+
+        // Obtener datos desde la API usando el apiId
+        usuarioRepo.getUserFromApi(apiId, (usuarioActual, error) -> {
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (usuarioActual != null) {
@@ -246,8 +256,12 @@ public class PerfilFragment extends Fragment {
             nuevaPassword = ""; // O puedes manejarlo diferente según tu API
         }
 
+        // Obtener el API ID desde SharedPreferences para actualizar en la API
+        SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        int apiId = preferences.getInt("userApiId", -1);
+
         // Actualizar usuario en la API
-        usuarioRepo.updateUserInApi(usuarioActualId, nuevoNombre, nuevoApellido, nuevoEmail, nuevaPassword,
+        usuarioRepo.updateUserInApi(apiId, nuevoNombre, nuevoApellido, nuevoEmail, nuevaPassword,
                 (usuarioActualizado, error) -> {
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(() -> {

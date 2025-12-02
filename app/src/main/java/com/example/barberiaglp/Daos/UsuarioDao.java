@@ -14,6 +14,9 @@ public interface UsuarioDao {
     @Insert
     void insert(Usuario usuario);
 
+    @Insert
+    long insertWithId(Usuario usuario); // Retorna el ID insertado
+
     @Query("SELECT * FROM usuarios WHERE email = :email AND password = :password")
     Usuario login(String email, String password);
 
@@ -26,7 +29,7 @@ public interface UsuarioDao {
     @Query("SELECT * FROM usuarios")
     LiveData<List<Usuario>> getAllUsersAsLiveData();
 
-    //temporal para las pruebas con la base de datos
+    // temporal para las pruebas con la base de datos
     @Query("DELETE FROM usuarios")
     void deleteAll();
 

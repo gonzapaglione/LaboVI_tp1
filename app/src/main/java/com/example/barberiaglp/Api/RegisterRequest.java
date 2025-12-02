@@ -1,8 +1,14 @@
 package com.example.barberiaglp.Network;
 
+import com.google.gson.annotations.SerializedName;
+
 public class RegisterRequest {
+    @SerializedName("firstName")
     private String nombre;
+
+    @SerializedName("lastName")
     private String apellido;
+
     private String email;
     private String password;
 

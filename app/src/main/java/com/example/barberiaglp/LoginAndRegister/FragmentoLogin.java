@@ -64,7 +64,9 @@ public class FragmentoLogin extends Fragment {
                 if (usuario != null) {
                     Toast.makeText(getContext(), "Bienvenida " + usuario.nombre, Toast.LENGTH_SHORT).show();
 
-                    guardarPreferencias(usuario.email, passwordIngresada, usuario.id);
+                    // Guardar sesión con ambos IDs (local y API)
+                    int apiId = (usuario.apiId != null) ? usuario.apiId : usuario.id;
+                    guardarPreferencias(usuario.email, passwordIngresada, usuario.id, apiId);
 
                     // Redirigir a MainActivity
                     Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -81,14 +83,15 @@ public class FragmentoLogin extends Fragment {
         });
     }
 
-    private void guardarPreferencias(String email, String password, int id) {
+    private void guardarPreferencias(String email, String password, int localId, int apiId) {
         SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         // Siempre guardamos que la sesión está iniciada
         editor.putBoolean("isLoggedIn", true);
         editor.putString("userEmail", email);
-        editor.putInt("userId", id);
+        editor.putInt("userLocalId", localId); // ID local de la BD
+        editor.putInt("userApiId", apiId); // ID de la API
 
         // Si el checkbox está marcado, guardamos los datos
         if (checkboxRemember.isChecked()) {

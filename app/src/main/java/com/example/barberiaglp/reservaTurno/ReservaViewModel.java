@@ -56,17 +56,17 @@ public class ReservaViewModel extends AndroidViewModel {
         servicioRepo = new ServicioRepositorio(application);
         horarioRepo = new HorarioRepositorio(application);
 
-
         // Carga inicial de la lista completa de servicios.
         this.todosLosServicios = servicioRepo.getAllServicios();
     }
 
-
     public void setServicio(Servicio servicio) {
-        // Para evitar recálculos innecesarios, solo actuamos si el servicio realmente cambia.
+        // Para evitar recálculos innecesarios, solo actuamos si el servicio realmente
+        // cambia.
         if (servicioSeleccionado.getValue() == null || !servicioSeleccionado.getValue().equals(servicio)) {
             servicioSeleccionado.setValue(servicio);
-            // Cada vez que se establece un nuevo servicio, se reinician las selecciones posteriores.
+            // Cada vez que se establece un nuevo servicio, se reinician las selecciones
+            // posteriores.
             setBarbero(null);
             // Y se dispara el recálculo de los barberos.
             actualizarBarberosDisponibles();
@@ -86,7 +86,7 @@ public class ReservaViewModel extends AndroidViewModel {
             // Se reinicia la hora y se recalculan las horas.
             setHora(null);
             actualizarHorasDisponibles();
-           ;
+            ;
         }
     }
 
@@ -94,16 +94,37 @@ public class ReservaViewModel extends AndroidViewModel {
         horaSeleccionada.setValue(hora);
     }
 
-    public LiveData<Servicio> getServicioSeleccionado() { return servicioSeleccionado; }
-    public LiveData<Usuario> getBarberoSeleccionado() { return barberoSeleccionado; }
-    public LiveData<String> getFechaSeleccionada() { return fechaSeleccionada; }
-    public LiveData<String> getHoraSeleccionada() { return horaSeleccionada; }
+    public LiveData<Servicio> getServicioSeleccionado() {
+        return servicioSeleccionado;
+    }
 
-    public LiveData<List<Servicio>> getTodosLosServicios() { return todosLosServicios; }
-    public LiveData<List<Usuario>> getBarberosFiltrados() { return barberosFiltrados; }
-    public LiveData<List<String>> getFechasDisponibles() { return fechasDisponibles; }
-    public LiveData<List<String>> getHorasDisponibles() { return horasDisponibles; }
+    public LiveData<Usuario> getBarberoSeleccionado() {
+        return barberoSeleccionado;
+    }
 
+    public LiveData<String> getFechaSeleccionada() {
+        return fechaSeleccionada;
+    }
+
+    public LiveData<String> getHoraSeleccionada() {
+        return horaSeleccionada;
+    }
+
+    public LiveData<List<Servicio>> getTodosLosServicios() {
+        return todosLosServicios;
+    }
+
+    public LiveData<List<Usuario>> getBarberosFiltrados() {
+        return barberosFiltrados;
+    }
+
+    public LiveData<List<String>> getFechasDisponibles() {
+        return fechasDisponibles;
+    }
+
+    public LiveData<List<String>> getHorasDisponibles() {
+        return horasDisponibles;
+    }
 
     private void actualizarBarberosDisponibles() {
         Servicio servicio = servicioSeleccionado.getValue();
@@ -117,6 +138,7 @@ public class ReservaViewModel extends AndroidViewModel {
             barberosFiltrados.postValue(barberos);
         });
     }
+
     public void prepararFechasParaBarberoSeleccionado() {
         actualizarFechasDisponibles();
     }
@@ -159,10 +181,12 @@ public class ReservaViewModel extends AndroidViewModel {
                 String diaSemana = obtenerDia(diaSemanaa);
 
                 List<Horario> horarios = horarioRepo.getHorariosPorBarberoYDia(barbero.id, diaSemana);
-                if (horarios == null) horarios = new ArrayList<>();
+                if (horarios == null)
+                    horarios = new ArrayList<>();
 
                 List<String> horasOcupadas = turnoRepo.getHorasOcupadas(barbero.id, fecha);
-                if (horasOcupadas == null) horasOcupadas = new ArrayList<>();
+                if (horasOcupadas == null)
+                    horasOcupadas = new ArrayList<>();
 
                 List<String> disponibles = new ArrayList<>();
                 int duracion = servicio.duracionMin;
@@ -177,7 +201,8 @@ public class ReservaViewModel extends AndroidViewModel {
 
                         // Si la fecha es hoy, verificamos que la hora sea posterior a la actual
                         if (!horasOcupadas.contains(horaStr)) {
-                            if (fecha.equals(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()))) {
+                            if (fecha.equals(
+                                    new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()))) {
                                 LocalTime ahora = LocalTime.now();
                                 if (inicio.isAfter(ahora)) { // Solo agregamos horas futuras
                                     disponibles.add(horaStr);
@@ -191,10 +216,10 @@ public class ReservaViewModel extends AndroidViewModel {
                     }
                 }
 
-
                 horasDisponibles.postValue(disponibles);
                 Log.d("ReservaViewModel", "Horas disponibles generadas: " + disponibles);
-                Log.d("ReservaViewModel", "Barbero: " + barbero.nombre + ", Fecha: " + fecha + ", Servicio: " + servicio.nombre);
+                Log.d("ReservaViewModel",
+                        "Barbero: " + barbero.nombre + ", Fecha: " + fecha + ", Servicio: " + servicio.nombre);
                 Log.d("ReservaViewModel", "Horarios: " + horarios);
                 Log.d("ReservaViewModel", "Horas ocupadas: " + horasOcupadas);
                 Log.d("ReservaViewModel", "Horas disponibles finales: " + disponibles);
@@ -206,20 +231,26 @@ public class ReservaViewModel extends AndroidViewModel {
         });
     }
 
-
     private String obtenerDia(int diaSemanaa) {
-        if(diaSemanaa == 1) return "Domingo";
-        if(diaSemanaa == 2) return "Lunes";
-        if(diaSemanaa == 3) return "Martes";
-        if(diaSemanaa == 4) return "Miércoles";
-        if(diaSemanaa == 5) return "Jueves";
-        if(diaSemanaa == 6) return "Viernes";
-        if(diaSemanaa == 7) return "Sábado";
+        if (diaSemanaa == 1)
+            return "Domingo";
+        if (diaSemanaa == 2)
+            return "Lunes";
+        if (diaSemanaa == 3)
+            return "Martes";
+        if (diaSemanaa == 4)
+            return "Miércoles";
+        if (diaSemanaa == 5)
+            return "Jueves";
+        if (diaSemanaa == 6)
+            return "Viernes";
+        if (diaSemanaa == 7)
+            return "Sábado";
         return "";
     }
 
     public int getClienteId() {
         SharedPreferences preferences = getApplication().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        return preferences.getInt("userId", -1);
+        return preferences.getInt("userLocalId", -1);
     }
 }

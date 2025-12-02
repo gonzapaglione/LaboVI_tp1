@@ -9,14 +9,17 @@ public class Usuario {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
+    public Integer apiId; // ID del usuario en el servidor de la API (puede ser null para usuarios
+                          // locales)
+
     public String nombre;
     public String apellido;
     public String email;
     public String password;
     public String rol;
 
-   public String fechaRegistro;
-   public String fechaNacimiento;
+    public String fechaRegistro;
+    public String fechaNacimiento;
 
     public int getId() {
         return id;

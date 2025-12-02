@@ -25,6 +25,8 @@ import java.util.Locale;
 
 import com.example.barberiaglp.Modelos.TurnoConDetalles;
 import com.example.barberiaglp.Repositorios.TurnosRepositorio;
+import com.example.barberiaglp.Repositorios.UsuarioRepositorio;
+import com.example.barberiaglp.BD.AppDatabase;
 
 public class TurnosFragment extends Fragment {
 
@@ -35,6 +37,7 @@ public class TurnosFragment extends Fragment {
     private FloatingActionButton fabAgregar;
     private LinearLayout btnProximos, btnPasados;
     private TurnosRepositorio turnoRepo;
+    private UsuarioRepositorio usuarioRepo;
     private int usuarioActualId = -1;
 
     public TurnosFragment() {
@@ -47,6 +50,7 @@ public class TurnosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_turnos, container, false);
 
         turnoRepo = new TurnosRepositorio(requireActivity().getApplication());
+        usuarioRepo = new UsuarioRepositorio(requireActivity().getApplication());
 
         tvProximos = view.findViewById(R.id.tvProximos);
         tvPasados = view.findViewById(R.id.tvPasados);
@@ -87,13 +91,12 @@ public class TurnosFragment extends Fragment {
 
     private void obtenerIdUsuarioYcargarTurnos() {
         SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        usuarioActualId = preferences.getInt("userId", -1);
+        usuarioActualId = preferences.getInt("userLocalId", -1);
 
         if (usuarioActualId != -1) {
             cargarTurnosDeLaBD();
         } else {
             Toast.makeText(getContext(), "Error: No se pudo identificar al usuario.", Toast.LENGTH_LONG).show();
-
         }
     }
 
@@ -137,7 +140,7 @@ public class TurnosFragment extends Fragment {
     }
 
     private void cambiarEstado(TurnoConDetalles turnodetalle) {
-        if(turnodetalle.turno.getEstado().equals("Pendiente")){
+        if (turnodetalle.turno.getEstado().equals("Pendiente")) {
             turnodetalle.turno.setEstado("Atendido");
         }
         turnoRepo.update(turnodetalle.turno);

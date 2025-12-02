@@ -1,7 +1,11 @@
 package com.example.barberiaglp.LoginAndRegister;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.barberiaglp.R;
 import com.example.barberiaglp.Repositorios.UsuarioRepositorio;
+import com.example.barberiaglp.SeccionesPrincipales.MainActivity;
 
 public class FragmentoRegistrar extends Fragment {
 
@@ -82,24 +88,56 @@ public class FragmentoRegistrar extends Fragment {
         }
 
         // Llamar a la API para registrar el usuario
+        Log.d("FragmentoRegistrar", "Iniciando registro desde UI...");
         usuarioRepo.register(nombre, apellido, email, password, (usuario, error) -> {
             // Verificamos que el fragmento siga "vivo" antes de actuar
             if (getActivity() == null) {
+                Log.e("FragmentoRegistrar", "Activity es null, no se puede actualizar UI");
                 return;
             }
-            // Volvemos al hilo principal para actualizar la UI (mostrar Toasts)
+            // Volvemos al hilo principal para actualizar la UI
             getActivity().runOnUiThread(() -> {
                 if (usuario != null) {
-                    // Registro exitoso
-                    Toast.makeText(getContext(), "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-                    limpiarInputs();
+                    // Registro exitoso - Guardar preferencias y navegar a MainActivity
+                    Log.d("FragmentoRegistrar", "Registro exitoso! Usuario: " + usuario.nombre);
+                    Log.d("FragmentoRegistrar", "ID local: " + usuario.id + ", API ID: " + usuario.apiId);
+                    Toast.makeText(getContext(), "Bienvenido " + usuario.nombre, Toast.LENGTH_SHORT).show();
+
+                    // Guardar sesión con ambos IDs (local y API)
+                    int apiId = (usuario.apiId != null) ? usuario.apiId : usuario.id;
+                    guardarPreferencias(usuario.email, password, usuario.id, apiId);
+
+                    // Navegar a MainActivity
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
                 } else {
-                    // Error en el registro
-                    Toast.makeText(getContext(), error != null ? error : "Error al registrar usuario",
-                            Toast.LENGTH_SHORT).show();
+                    // Error en el registro - Mostrar en AlertDialog para que no desaparezca
+                    Log.e("FragmentoRegistrar", "Error en registro: " + error);
+                    String mensajeError = error != null ? error : "Error desconocido al registrar usuario";
+
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Error en el Registro")
+                            .setMessage(mensajeError)
+                            .setPositiveButton("Entendido", null)
+                            .show();
                 }
             });
         });
+    }
+
+    private void guardarPreferencias(String email, String password, int localId, int apiId) {
+        SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        // Guardar sesión activa
+        editor.putBoolean("isLoggedIn", true);
+        editor.putString("userEmail", email);
+        editor.putInt("userLocalId", localId); // ID local de la BD
+        editor.putInt("userApiId", apiId); // ID de la API
+        editor.putBoolean("rememberMe", false); // No recordar contraseña en registro automático
+        editor.apply();
     }
 
     private void limpiarInputs() {

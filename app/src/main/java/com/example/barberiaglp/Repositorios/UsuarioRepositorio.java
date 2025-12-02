@@ -1,6 +1,7 @@
 package com.example.barberiaglp.Repositorios;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -51,29 +52,47 @@ public class UsuarioRepositorio {
 
     // Método para registro usando API
     public void register(String nombre, String apellido, String email, String password, OnRegisterResult callback) {
+        Log.d("UsuarioRepo", "=== INICIANDO REGISTRO ===");
+        Log.d("UsuarioRepo", "Email: " + email);
+        Log.d("UsuarioRepo", "Nombre: " + nombre + " " + apellido);
+
         RegisterRequest registerRequest = new RegisterRequest(nombre, apellido, email, password);
 
         Call<AuthResponse> call = apiService.register(registerRequest);
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AuthResponse authResponse = response.body();
+                Log.d("UsuarioRepo", "Response Code: " + response.code());
+                Log.d("UsuarioRepo", "Response Success: " + response.isSuccessful());
 
-                    // Convertir AuthResponse a Usuario
-                    Usuario usuario = new Usuario();
-                    usuario.id = authResponse.getId();
-                    usuario.nombre = authResponse.getNombre();
-                    usuario.apellido = authResponse.getApellido();
-                    usuario.email = authResponse.getEmail();
-                    usuario.rol = authResponse.getRol();
-                    usuario.fechaRegistro = authResponse.getFechaRegistro();
-
-                    callback.onResult(usuario, null);
+                if (response.isSuccessful()) {
+                    Log.d("UsuarioRepo", "Registro exitoso! Haciendo login automático...");
+                    // El servidor devuelve 201 con texto plano, no JSON
+                    // Hacer login automático para obtener los datos del usuario
+                    login(email, password, new OnLoginResult() {
+                        @Override
+                        public void onResult(Usuario usuario) {
+                            if (usuario != null) {
+                                Log.d("UsuarioRepo", "Login automático exitoso! Usuario ID: " + usuario.id);
+                                callback.onResult(usuario, null);
+                            } else {
+                                Log.e("UsuarioRepo", "Error: Login automático falló");
+                                callback.onResult(null, "Error al obtener datos del usuario después del registro");
+                            }
+                        }
+                    });
                 } else {
+                    // Manejar diferentes códigos de error
                     String errorMsg = "Error al registrar usuario";
                     if (response.code() == 400) {
                         errorMsg = "El correo electrónico ya está registrado";
+                        Log.e("UsuarioRepo", "Error 400: Email duplicado");
+                    } else if (response.code() == 500) {
+                        errorMsg = "Error del servidor. Por favor intenta más tarde o contacta al administrador.";
+                        Log.e("UsuarioRepo", "Error 500: Error interno del servidor");
+                    } else {
+                        errorMsg = "Error al registrar usuario (Código: " + response.code() + ")";
+                        Log.e("UsuarioRepo", "Error " + response.code() + ": " + response.message());
                     }
                     callback.onResult(null, errorMsg);
                 }
@@ -81,7 +100,51 @@ public class UsuarioRepositorio {
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                callback.onResult(null, "Error de conexión: " + t.getMessage());
+                Log.e("UsuarioRepo", "FALLO DE CONEXIÓN EN REGISTRO", t);
+                Log.e("UsuarioRepo", "Error: " + t.getMessage());
+
+                // Detectar error específico de parsing JSON (el servidor devuelve texto plano
+                // en 201)
+                if (t instanceof com.google.gson.JsonSyntaxException ||
+                        (t.getMessage() != null && t.getMessage().contains("Expected BEGIN_OBJECT but was STRING"))) {
+                    Log.d("UsuarioRepo",
+                            "Servidor devolvió texto plano (201), se considera registro exitoso. Haciendo login...");
+                    // El registro fue exitoso (201) pero el servidor devolvió texto plano
+                    // Hacer login automático para obtener los datos del usuario
+                    login(email, password, new OnLoginResult() {
+                        @Override
+                        public void onResult(Usuario usuario) {
+                            if (usuario != null) {
+                                Log.d("UsuarioRepo", "Login automático exitoso! Usuario ID: " + usuario.id);
+                                callback.onResult(usuario, null);
+                            } else {
+                                Log.e("UsuarioRepo", "Error: Login automático falló");
+                                callback.onResult(null,
+                                        "Registro exitoso, pero no se pudo iniciar sesión automáticamente. Por favor inicia sesión manualmente.");
+                            }
+                        }
+                    });
+                    return;
+                }
+
+                // Otros errores de conexión
+                String errorMsg;
+                if (t instanceof java.io.EOFException || t.getMessage().contains("not found: limit=")) {
+                    errorMsg = "Error del servidor (respuesta mal formada).\n\n" +
+                            "El servidor tiene un problema de configuración.\n\n" +
+                            "Soluciones:\n" +
+                            "• Contacta al administrador del servidor\n" +
+                            "• El email '" + email + "' podría ya estar registrado\n" +
+                            "• Intenta con otro email diferente";
+                } else if (t instanceof java.net.UnknownHostException) {
+                    errorMsg = "Sin conexión a Internet.\n\nVerifica tu conexión y vuelve a intentar.";
+                } else if (t instanceof java.net.SocketTimeoutException) {
+                    errorMsg = "Tiempo de espera agotado.\n\nEl servidor tardó demasiado en responder.";
+                } else {
+                    errorMsg = "Error de conexión.\n\n" + t.getMessage();
+                }
+
+                callback.onResult(null, errorMsg);
             }
         });
     }
@@ -93,38 +156,75 @@ public class UsuarioRepositorio {
 
     // Para el login usando API
     public void login(String email, String password, OnLoginResult callback) {
+        Log.d("UsuarioRepo", "=== INICIANDO LOGIN ===");
+        Log.d("UsuarioRepo", "Email: " + email);
+
         LoginRequest loginRequest = new LoginRequest(email, password);
 
         Call<AuthResponse> call = apiService.login(loginRequest);
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                Log.d("UsuarioRepo", "Login Response Code: " + response.code());
+                Log.d("UsuarioRepo", "Login Success: " + response.isSuccessful());
+
                 if (response.isSuccessful() && response.body() != null) {
                     AuthResponse authResponse = response.body();
+                    Log.d("UsuarioRepo", "AuthResponse recibido: " + authResponse.getNombre());
+                    Log.d("UsuarioRepo", "API User ID: " + authResponse.getId());
 
                     // Convertir AuthResponse a Usuario
                     Usuario usuario = new Usuario();
-                    usuario.id = authResponse.getId();
+                    usuario.apiId = authResponse.getId(); // Guardar ID del servidor
                     usuario.nombre = authResponse.getNombre();
                     usuario.apellido = authResponse.getApellido();
                     usuario.email = authResponse.getEmail();
                     usuario.rol = authResponse.getRol();
                     usuario.fechaRegistro = authResponse.getFechaRegistro();
+                    usuario.password = authResponse.getPassword();
 
-                    callback.onResult(usuario);
+                    Log.d("UsuarioRepo", "Guardando usuario en BD local...");
+                    // Guardar usuario de API en BD local y luego invocar callback
+                    AppDatabase.databaseWriteExecutor.execute(() -> {
+                        try {
+                            // Verificar si ya existe por email
+                            Usuario existente = usuarioDao.findByEmail(usuario.email);
+                            if (existente != null) {
+                                // Ya existe, actualizar y usar su ID local
+                                Log.d("UsuarioRepo", "Usuario ya existe con ID local: " + existente.id);
+                                usuario.id = existente.id;
+                                usuarioDao.update(usuario);
+                            } else {
+                                // No existe, insertar nuevo y obtener ID autogenerado
+                                Log.d("UsuarioRepo", "Insertando nuevo usuario en BD local...");
+                                long nuevoId = usuarioDao.insertWithId(usuario);
+                                usuario.id = (int) nuevoId;
+                                Log.d("UsuarioRepo",
+                                        "Usuario insertado con ID local: " + usuario.id + ", API ID: " + usuario.apiId);
+                            }
+
+                            // Callback DESPUÉS de que termine la inserción/actualización
+                            callback.onResult(usuario);
+                        } catch (Exception e) {
+                            Log.e("UsuarioRepo", "Error al guardar usuario en BD local", e);
+                            callback.onResult(null);
+                        }
+                    });
                 } else {
+                    Log.e("UsuarioRepo", "Login falló - Code: " + response.code());
                     callback.onResult(null);
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Log.e("UsuarioRepo", "FALLO DE CONEXIÓN EN LOGIN", t);
+                Log.e("UsuarioRepo", "Error: " + t.getMessage());
                 callback.onResult(null);
             }
         });
-    }
+    } // Interfaz para el callback del login
 
-    // Interfaz para el callback del login
     public interface OnLoginResult {
         void onResult(Usuario usuario);
     }
@@ -186,6 +286,12 @@ public class UsuarioRepositorio {
             Usuario usuario = usuarioDao.findByEmail(email);
             callback.onUserFound(usuario);
         });
+    }
+
+    // Método síncrono para obtener usuario por email (usar solo cuando sea
+    // necesario)
+    public Usuario findByEmailSync(String email) {
+        return usuarioDao.findByEmail(email);
     }
 
     // Obtener usuario desde la API por ID
