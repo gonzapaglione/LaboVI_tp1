@@ -31,7 +31,6 @@ public class ReservaFragment4 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_reserva_resumen, container, false);
         viewModel = new ViewModelProvider(requireActivity()).get(ReservaViewModel.class);
 
-
         TextView tvServicio = view.findViewById(R.id.tvDetalleServicio);
         TextView tvBarbero = view.findViewById(R.id.tvDetallePeluquero);
         TextView tvFechaHora = view.findViewById(R.id.tvDetalleFecha);
@@ -39,14 +38,15 @@ public class ReservaFragment4 extends Fragment {
 
         // Rellenar con datos del ViewModel
         tvServicio.setText(viewModel.getServicioSeleccionado().getValue().nombre);
-        tvBarbero.setText(viewModel.getBarberoSeleccionado().getValue().nombre + " "+ viewModel.getBarberoSeleccionado().getValue().apellido);
-        String fechaHora = viewModel.getFechaSeleccionada().getValue() + " a las " + viewModel.getHoraSeleccionada().getValue();
+        tvBarbero.setText(viewModel.getBarberoSeleccionado().getValue().nombre + " "
+                + viewModel.getBarberoSeleccionado().getValue().apellido);
+        String fechaHora = viewModel.getFechaSeleccionada().getValue() + " a las "
+                + viewModel.getHoraSeleccionada().getValue();
         tvFechaHora.setText(fechaHora);
 
         btnConfirm.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Reservando turno...", Toast.LENGTH_SHORT).show();
             crearTurno();
-            Toast.makeText(getContext(), "Turno reservado con éxito", Toast.LENGTH_SHORT).show();
-            requireActivity().finish();
         });
 
         View btnBack = view.findViewById(R.id.btnBack3);
@@ -83,12 +83,19 @@ public class ReservaFragment4 extends Fragment {
         turno.horaFin = horaFinStr;
         turno.estado = "Pendiente";
 
-
         // Guardar en base de datos en background
         AppDatabase.databaseWriteExecutor.execute(() -> {
             AppDatabase.getInstance(requireContext()).turnoDao().insertar(turno);
             Log.d("ReservaViewModel", "Turno guardado: " + turno.fecha + " " + turno.horaInicio);
             Log.d("ReservaViewModel", "Turno guardado: " + turno.clienteId);
+
+            // Volver al hilo principal para mostrar mensaje y cerrar actividad
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getContext(), "Turno reservado con éxito", Toast.LENGTH_SHORT).show();
+                    requireActivity().finish();
+                });
+            }
         });
     }
 

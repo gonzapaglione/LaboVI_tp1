@@ -89,6 +89,15 @@ public class TurnosFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Recargar turnos cada vez que el fragmento vuelve a ser visible
+        if (usuarioActualId != -1) {
+            cargarTurnosDeLaBD();
+        }
+    }
+
     private void obtenerIdUsuarioYcargarTurnos() {
         SharedPreferences preferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
         usuarioActualId = preferences.getInt("userLocalId", -1);
